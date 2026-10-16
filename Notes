@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدیریت اقساط و یادداشت‌ها</title>
+    <!-- فونت وزیرمتن -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Vazirmatn', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            padding: 12px;
+            direction: rtl;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 10px auto 0;
+            padding-bottom: 40px;
+        }
+
+        /* نوار تب‌ها (جابجایی کلیکی) */
+        .tabs {
+            display: flex;
+            background: #e2e8f0;
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            gap: 4px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: none;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            background-color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* آمار خلاصه وضعیت مالی */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            padding: 12px 8px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .stat-card .num {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-top: 4px;
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* کارت‌ها و فرم‌ها */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 0.82rem;
+            font-weight: bold;
+            color: #475569;
+        }
+
+        input, textarea {
+            padding: 11px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: #fafafa;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background-color: #f1f5f9;
+            color: #334155;
+            border: 1px solid var(--border);
+        }
+
+        /* دکمه‌های فیلتر */
+        .filter-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-bottom: 15px;
+            padding: 0;
+            width: 100%;
+        }
+
+        .filter-chip {
+            padding: 8px 4px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            white-space: nowrap;
+            text-align: center;
+            transition: all 0.2s;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .filter-chip.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* کارت‌های اقساط */
+        .installment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .inst-item {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            padding: 14px;
+            position: relative;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .inst-item.paid {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+            opacity: 0.85;
+        }
+
+        .inst-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .inst-title-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .drag-handle {
+            color: #cbd5e1;
+            font-size: 1.2rem;
+            cursor: grab;
+            padding: 0 4px;
+            user-select: none;
+        }
+
+        .inst-title {
+            font-weight: bold;
+            font-size: 1rem;
+            color: #1e293b;
+        }
+
+        .inst-amount-tag {
+            background: #eff6ff;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        .inst-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px;
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #475569;
+            word-break: break-all;
+        }
+
+        .copy-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: monospace;
+            direction: ltr;
+            font-size: 0.88rem;
+            font-weight: bold;
+            color: #1e293b;
+            transition: all 0.2s;
+            user-select: all;
+        }
+
+        .copy-box:active {
+            background: #e0f2fe;
+            border-color: var(--primary);
+            transform: scale(0.96);
+        }
+
+        .copy-box .copy-icon {
+            font-size: 0.85rem;
+            color: var(--primary);
+        }
+
+        .inst-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .status-badge.unpaid {
+            background-color: #fef3c7;
+            color: #b45309;
+        }
+
+        .status-badge.paid {
+            background-color: #d1fae5;
+            color: #047857;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-icon {
+            background: #f1f5f9;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #475569;
+            transition: background 0.2s;
+        }
+
+        .btn-icon:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-icon.delete {
+            color: var(--danger);
+            background: #fef2f2;
+        }
+
+        /* کارت‌های یادداشت */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+        }
+
+        .note-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .note-title-area {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .note-title {
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: #1e293b;
+        }
+
+        .note-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .note-body {
+            font-size: 0.88rem;
+            color: #334155;
+            line-height: 1.5;
+            white-space: pre-line;
+            margin-bottom: 12px;
+        }
+
+        .note-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .search-box {
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding-right: 35px;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        /* Toast پیام کپی */
+        #toast {
+            visibility: hidden;
+            min-width: 180px;
+            background-color: #0f172a;
+            color: #fff;
+            text-align: center;
+            border-radius: 25px;
+            padding: 10px 18px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 0.88rem;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .footer-tools {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 15px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            background: white;
+            border-radius: 12px;
+            border: 1px dashed var(--border);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- نوار تب‌ها (تنها هدر بالایی) -->
+    <div class="tabs">
+        <button class="tab-btn active" id="btn-tab-installments" onclick="switchTab('installments')">
+            <span>💳</span>
+            <span>مدیریت اقساط</span>
+        </button>
+        <button class="tab-btn" id="btn-tab-notes" onclick="switchTab('notes')">
+            <span>📝</span>
+            <span>یادداشت‌های روزانه</span>
+        </button>
+    </div>
+
+    <!-- =============== تب اول: اقساط =============== -->
+    <div id="installments" class="tab-content active">
+        
+        <!-- آمار خلاصه وضعیت مالی -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="label">مجموع کل اقساط</div>
+                <div class="num" id="stat-total" style="color: var(--primary);">0</div>
+                <div class="label">میلیون تومان</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">پرداخت‌شده</div>
+                <div class="num" id="stat-paid" style="color: var(--success);">0</div>
+                <div class="label">میلیون تومان</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">باقی‌مانده</div>
+                <div class="num" id="stat-remaining" style="color: var(--warning);">0</div>
+                <div class="label">میلیون تومان</div>
+            </div>
+        </div>
+
+        <!-- فرم ثبت قسط جدید -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>➕</span>
+                    <span>ثبت قسط جدید</span>
+                </div>
+            </div>
+            <form id="installment-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>عنوان قسط</label>
+                        <input type="text" id="inst-title" placeholder="مثلاً: قسط وام مسکن" required>
+                    </div>
+                    <div class="form-group">
+                        <label>مبلغ قسط (میلیون تومان)</label>
+                        <input type="number" step="0.01" id="inst-amount" placeholder="مثلاً 2.5 یا 0.8" required>
+                    </div>
+                    <div class="form-group">
+                        <label>شماره کارت (۱۶ رقم) یا شبا (IR...)</label>
+                        <input type="text" id="inst-card" placeholder="6037... یا IR1234...">
+                    </div>
+                    <div class="form-group">
+                        <label>تاریخ / موعد سررسید</label>
+                        <input type="text" id="inst-date" placeholder="مثلاً: پنجم هر ماه">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label>توضیحات تکمیلی (اختیاری)</label>
+                    <input type="text" id="inst-desc" placeholder="بانک عامل، توضیحات یا نکات لازم...">
+                </div>
+                <button type="submit" class="btn">ثبت و اضافه کردن قسط</button>
+            </form>
+        </div>
+
+        <!-- فیلتر و لیست اقساط -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>📋</span>
+                    <span>لیست اقساط فعال</span>
+                </div>
+            </div>
+
+            <!-- دکمه‌های فیلتر وضعیت -->
+            <div class="filter-bar">
+                <button class="filter-chip active" onclick="setInstFilter('all', this)">همه اقساط</button>
+                <button class="filter-chip" onclick="setInstFilter('unpaid', this)">⏳ پرداخت نشده</button>
+                <button class="filter-chip" onclick="setInstFilter('paid', this)">✅ پرداخت شده</button>
+            </div>
+
+            <!-- کارت‌های هوشمند اقساط -->
+            <div id="installment-list" class="installment-list">
+                <!-- به صورت پویا رندر می‌شود -->
+            </div>
+        </div>
+    </div>
+
+    <!-- =============== تب دوم: یادداشت‌ها =============== -->
+    <div id="notes" class="tab-content">
+        <!-- فرم ثبت یادداشت -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>📝</span>
+                    <span>افزودن یادداشت جدید</span>
+                </div>
+            </div>
+            <form id="note-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>موضوع / عنوان</label>
+                        <input type="text" id="note-title" placeholder="مثلاً: سرویس ماشین / خرید خواربار" required>
+                    </div>
+                    <div class="form-group">
+                        <label>تاریخ یادداشت</label>
+                        <input type="text" id="note-date" placeholder="مثلاً: 1403/07/25" required>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label>شرح یادداشت</label>
+                    <textarea id="note-desc" rows="3" placeholder="جزئیات خریدها، کیلومتر ماشین، هزینه‌ها..."></textarea>
+                </div>
+                <button type="submit" class="btn">ثبت یادداشت</button>
+            </form>
+        </div>
+
+        <!-- جستجو و لیست یادداشت‌ها -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <span>📚</span>
+                    <span>آرشیو یادداشت‌ها</span>
+                </div>
+            </div>
+
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="note-search" placeholder="جستجو در عنوان یا متن یادداشت‌ها..." oninput="renderNotes()">
+            </div>
+
+            <div id="notes-container" class="notes-grid">
+                <!-- رندر پویا -->
+            </div>
+        </div>
+    </div>
+
+    <!-- پشتیبان‌گیری و بازگردانی -->
+    <div class="footer-tools">
+        <button class="btn btn-secondary" style="width: auto; font-size: 0.8rem;" onclick="exportData()">💾 دانلود پشتیبان (Backup)</button>
+        <button class="btn btn-secondary" style="width: auto; font-size: 0.8rem;" onclick="document.getElementById('import-file').click()">📂 بازیابی فایل پشتیبان</button>
+        <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importData(event)">
+    </div>
+</div>
+
+<!-- پیغام Toast کپی سریع -->
+<div id="toast">شماره کپی شد! 📋</div>
+
+<script>
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        document.getElementById('btn-tab-' + tabId).classList.add('active');
+    }
+
+    let installments = JSON.parse(localStorage.getItem('my_installments_v3')) || [];
+    let notes = JSON.parse(localStorage.getItem('my_notes_v3')) || [];
+    let currentInstFilter = 'all';
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    function copyToClipboard(text, e) {
+        if (e) e.stopPropagation();
+        if (!text || text === '-') {
+            showToast('شماره کارتی ثبت نشده است');
+            return;
+        }
+        const cleanText = text.replace(/[\s-]/g, '');
+        
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(cleanText).then(() => {
+                showToast('شماره کارت کپی شد! 📋');
+            }).catch(() => {
+                fallbackCopy(cleanText);
+            });
+        } else {
+            fallbackCopy(cleanText);
+        }
+    }
+
+    function fallbackCopy(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        showToast('شماره کارت کپی شد! 📋');
+    }
+
+    document.getElementById('installment-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const amountVal = parseFloat(document.getElementById('inst-amount').value) || 0;
+        
+        const newInst = {
+            id: Date.now(),
+            title: document.getElementById('inst-title').value.trim(),
+            amount: amountVal,
+            card: document.getElementById('inst-card').value.trim() || '-',
+            date: document.getElementById('inst-date').value.trim() || '-',
+            desc: document.getElementById('inst-desc').value.trim() || '-',
+            isPaid: false
+        };
+
+        installments.push(newInst);
+        saveInstallments();
+        renderInstallments();
+        this.reset();
+        showToast('قسط جدید با موفقیت ثبت شد ✅');
+    });
+
+    function saveInstallments() {
+        localStorage.setItem('my_installments_v3', JSON.stringify(installments));
+        updateStats();
+    }
+
+    function togglePaidStatus(id, e) {
+        if (e) e.stopPropagation();
+        const inst = installments.find(item => item.id === id);
+        if (inst) {
+            inst.isPaid = !inst.isPaid;
+            saveInstallments();
+            renderInstallments();
+        }
+    }
+
+    function setInstFilter(filter, btn) {
+        currentInstFilter = filter;
+        document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderInstallments();
+    }
+
+    function updateStats() {
+        let total = 0;
+        let paid = 0;
+
+        installments.forEach(item => {
+            const amt = parseFloat(item.amount) || 0;
+            total += amt;
+            if (item.isPaid) paid += amt;
+        });
+
+        const remaining = total - paid;
+
+        document.getElementById('stat-total').innerText = total.toLocaleString('fa-IR');
+        document.getElementById('stat-paid').innerText = paid.toLocaleString('fa-IR');
+        document.getElementById('stat-remaining').innerText = remaining.toLocaleString('fa-IR');
+    }
+
+    function renderInstallments() {
+        const list = document.getElementById('installment-list');
+        list.innerHTML = '';
+
+        let filtered = installments;
+        if (currentInstFilter === 'paid') {
+            filtered = installments.filter(item => item.isPaid);
+        } else if (currentInstFilter === 'unpaid') {
+            filtered = installments.filter(item => !item.isPaid);
+        }
+
+        if (filtered.length === 0) {
+            list.innerHTML = '<div class="empty-state">هیچ قسطی در این بخش ثبت نشده است.</div>';
+            return;
+        }
+
+        filtered.forEach((item, index) => {
+            const isPaid = item.isPaid;
+            const amountFormatted = Number(item.amount).toLocaleString('fa-IR');
+
+            const itemEl = document.createElement('div');
+            itemEl.className = `inst-item ${isPaid ? 'paid' : ''}`;
+
+            itemEl.innerHTML = `
+                <div class="inst-top">
+                    <div class="inst-title-area">
+                        <span class="drag-handle">⣿</span>
+                        <span class="inst-title">${item.title}</span>
+                    </div>
+                    <div class="inst-amount-tag">${amountFormatted} م‌ت</div>
+                </div>
+
+                <div class="inst-details-grid">
+                    <div class="detail-row">
+                        <span>💳</span>
+                        <span>کارت/شبا:</span>
+                        <span class="copy-box" onclick="copyToClipboard('${item.card}', event)" title="کلیک برای کپی">
+                            ${item.card} <span class="copy-icon">📋</span>
+                        </span>
+                    </div>
+                    <div class="detail-row">
+                        <span>📅</span>
+                        <span>موعد:</span>
+                        <strong>${item.date}</strong>
+                    </div>
+                    ${item.desc !== '-' ? `<div class="detail-row" style="grid-column: 1/-1;"><span>💬</span> <span>${item.desc}</span></div>` : ''}
+                </div>
+
+                <div class="inst-actions">
+                    <button class="status-badge ${isPaid ? 'paid' : 'unpaid'}" onclick="togglePaidStatus(${item.id}, event)">
+                        ${isPaid ? '✅ پرداخت شده' : '⏳ پرداخت نشده'}
+                    </button>
+                    
+                    <div class="action-btns">
+                        <button class="btn-icon" title="جابجایی به بالا" onclick="moveItem(${index}, -1, event)">⬆</button>
+                        <button class="btn-icon" title="جابجایی به پایین" onclick="moveItem(${index}, 1, event)">⬇</button>
+                        <button class="btn-icon delete" title="حذف" onclick="deleteInstallment(${item.id}, event)">🗑️</button>
+                    </div>
+                </div>
+            `;
+
+            list.appendChild(itemEl);
+        });
+    }
+
+    function moveItem(index, direction, e) {
+        if (e) e.stopPropagation();
+        const targetIndex = index + direction;
+        if (targetIndex < 0 || targetIndex >= installments.length) return;
+
+        const temp = installments[index];
+        installments[index] = installments[targetIndex];
+        installments[targetIndex] = temp;
+
+        saveInstallments();
+        renderInstallments();
+    }
+
+    function deleteInstallment(id, e) {
+        if (e) e.stopPropagation();
+        if (confirm('آیا از حذف این قسط مطمئن هستید؟')) {
+            installments = installments.filter(item => item.id !== id);
+            saveInstallments();
+            renderInstallments();
+        }
+    }
+
+    document.getElementById('note-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const newNote = {
+            id: Date.now(),
+            title: document.getElementById('note-title').value.trim(),
+            date: document.getElementById('note-date').value.trim(),
+            desc: document.getElementById('note-desc').value.trim()
+        };
+
+        notes.unshift(newNote);
+        saveNotes();
+        renderNotes();
+        this.reset();
+        showToast('یادداشت جدید ثبت شد 📝');
+    });
+
+    function saveNotes() {
+        localStorage.setItem('my_notes_v3', JSON.stringify(notes));
+    }
+
+    function renderNotes() {
+        const container = document.getElementById('notes-container');
+        const query = (document.getElementById('note-search')?.value || '').toLowerCase();
+        container.innerHTML = '';
+
+        const filtered = notes.filter(item => 
+            item.title.toLowerCase().includes(query) || 
+            item.desc.toLowerCase().includes(query)
+        );
+
+        if (filtered.length === 0) {
+            container.innerHTML = '<div class="empty-state" style="grid-column: 1/-1;">هیچ یادداشتی یافت نشد.</div>';
+            return;
+        }
+
+        filtered.forEach((item) => {
+            const card = document.createElement('div');
+            card.className = 'note-card';
+            card.innerHTML = `
+                <div>
+                    <div class="note-header">
+                        <div class="note-title-area">
+                            <span class="drag-handle">⣿</span>
+                            <div class="note-title">${item.title}</div>
+                        </div>
+                        <div class="note-date">📅 ${item.date}</div>
+                    </div>
+                    <div class="note-body">${item.desc}</div>
+                </div>
+                <div class="note-footer">
+                    <div class="action-btns">
+                        <button class="btn-icon" title="جابجایی به بالا" onclick="moveNote(${item.id}, -1, event)">⬆</button>
+                        <button class="btn-icon" title="جابجایی به پایین" onclick="moveNote(${item.id}, 1, event)">⬇</button>
+                    </div>
+                    <button class="btn-icon delete" title="حذف" onclick="deleteNote(${item.id}, event)">حذف 🗑️</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function moveNote(id, direction, e) {
+        if (e) e.stopPropagation();
+        const index = notes.findIndex(n => n.id === id);
+        if (index === -1) return;
+
+        const targetIndex = index + direction;
+        if (targetIndex < 0 || targetIndex >= notes.length) return;
+
+        const temp = notes[index];
+        notes[index] = notes[targetIndex];
+        notes[targetIndex] = temp;
+
+        saveNotes();
+        renderNotes();
+    }
+
+    function deleteNote(id, e) {
+        if (e) e.stopPropagation();
+        if (confirm('آیا از حذف این یادداشت مطمئن هستید؟')) {
+            notes = notes.filter(item => item.id !== id);
+            saveNotes();
+            renderNotes();
+        }
+    }
+
+    function exportData() {
+        const data = {
+            installments: installments,
+            notes: notes,
+            exportDate: new Date().toLocaleDateString('fa-IR')
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `backup-installments-notes-${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('فایل پشتیبان دانلود شد 💾');
+    }
+
+    function importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const imported = JSON.parse(e.target.result);
+                if (imported.installments || imported.notes) {
+                    installments = imported.installments || [];
+                    notes = imported.notes || [];
+                    saveInstallments();
+                    saveNotes();
+                    renderInstallments();
+                    renderNotes();
+                    showToast('اطلاعات بازیابی شد ✅');
+                } else {
+                    alert('فرمت فایل معتبر نیست.');
+                }
+            } catch (err) {
+                alert('خطا در خواندن فایل.');
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    renderInstallments();
+    renderNotes();
+</script>
+
+</body>
+</html>
