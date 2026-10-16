@@ -42,7 +42,7 @@
             padding-bottom: 40px;
         }
 
-        /* نوار تب‌ها (جابجایی کلیکی) */
+        /* نوار تب‌ها (تنها هدر بالایی) */
         .tabs {
             display: flex;
             background: #e2e8f0;
@@ -200,7 +200,7 @@
             border: 1px solid var(--border);
         }
 
-        /* دکمه‌های فیلتر */
+        /* دکمه‌های فیلتر (سه ستونه منظم) */
         .filter-bar {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -440,7 +440,6 @@
             background: #f1f5f9;
             padding: 2px 8px;
             border-radius: 6px;
-            white-space: nowrap;
         }
 
         .note-body {
@@ -451,7 +450,7 @@
             margin-bottom: 12px;
         }
 
-        .note-footer {
+        .note-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -575,7 +574,7 @@
                     </div>
                     <div class="form-group">
                         <label>مبلغ قسط (میلیون تومان)</label>
-                        <input type="number" step="0.01" id="inst-amount" placeholder="مثلاً 2.5 یا 0.8" required>
+                        <input type="number" step="0.001" id="inst-amount" placeholder="مثلاً 2.5 یا 5.638" required>
                     </div>
                     <div class="form-group">
                         <label>شماره کارت (۱۶ رقم) یا شبا (IR...)</label>
@@ -583,12 +582,16 @@
                     </div>
                     <div class="form-group">
                         <label>تاریخ / موعد سررسید</label>
-                        <input type="text" id="inst-date" placeholder="مثلاً: پنجم هر ماه">
+                        <input type="text" id="inst-date" placeholder="مثلاً: 1403/10/01">
+                    </div>
+                    <div class="form-group">
+                        <label>تاریخ پایان قسط</label>
+                        <input type="text" id="inst-end-date" placeholder="مثلاً: 1408/08/30">
                     </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 12px;">
                     <label>توضیحات تکمیلی (اختیاری)</label>
-                    <input type="text" id="inst-desc" placeholder="بانک عامل، توضیحات یا نکات لازم...">
+                    <input type="text" id="inst-desc" placeholder="بانک عامل، درصد یا نکات لازم...">
                 </div>
                 <button type="submit" class="btn">ثبت و اضافه کردن قسط</button>
             </form>
@@ -686,8 +689,147 @@
         document.getElementById('btn-tab-' + tabId).classList.add('active');
     }
 
-    let installments = JSON.parse(localStorage.getItem('my_installments_v3')) || [];
-    let notes = JSON.parse(localStorage.getItem('my_notes_v3')) || [];
+    // اقساط پیش‌فرض استخراج‌شده از جدول دفترچه شما
+    const defaultInstallments = [
+        {
+            id: 1,
+            title: "وام ۳۰۰ ودیعه مسکن نفت (بدون اقساط)",
+            amount: 0,
+            card: "-",
+            date: "1403/08/30",
+            endDate: "1411/08/30",
+            desc: "ودیعه مسکن نفت (بدون اقساط ماهانه)",
+            isPaid: false
+        },
+        {
+            id: 2,
+            title: "وام ۲۰۰ بدون سود ودیعه صندوق رفاه",
+            amount: 0,
+            card: "-",
+            date: "1407/07/30",
+            endDate: "-",
+            desc: "شروع بازپرداخت: 1407/07/30",
+            isPaid: false
+        },
+        {
+            id: 3,
+            title: "وام ۳۰۰ تجارت بدون سود نفت (فیش حقوقی)",
+            amount: 5,
+            card: "-",
+            date: "1403/10/01",
+            endDate: "1408/08/30",
+            desc: "پرداخت شده: ۳۵٪ (۱۰۵ میلیون تومان)",
+            isPaid: false
+        },
+        {
+            id: 4,
+            title: "مساعده ۱۴۰۵",
+            amount: 5,
+            card: "-",
+            date: "1405/03/01",
+            endDate: "1405/12/01",
+            desc: "پرداخت شده: ۴۰٪ (۲۰ میلیون تومان)",
+            isPaid: false
+        },
+        {
+            id: 5,
+            title: "اجاره مسکن سرآبادانی",
+            amount: 9.5,
+            card: "-",
+            date: "1404/08/01",
+            endDate: "1405/07/20",
+            desc: "پرداخت شده: ۹۲٪ (۱۰۴.۵ میلیون تومان)",
+            isPaid: false
+        },
+        {
+            id: 6,
+            title: "وام ازدواج الی ۴ درصد",
+            amount: 1,
+            card: "-",
+            date: "1401/07/07",
+            endDate: "1411/06/07",
+            desc: "پرداخت شده: ۴۰٪ (۴۸ میلیون تومان)",
+            isPaid: false
+        },
+        {
+            id: 7,
+            title: "وام ۲۰۰ ودیعه صادرات ۲۳ درصد",
+            amount: 5.638,
+            card: "-",
+            date: "1403/06/10",
+            endDate: "1408/05/10",
+            desc: "پرداخت شده: ۴۲٪ (۱۴۰.۹۵ میلیون تومان)",
+            isPaid: false
+        },
+        {
+            id: 8,
+            title: "وام ۲۰۰ ملت ۲۳ درصد",
+            amount: 5.638,
+            card: "-",
+            date: "1404/05/12",
+            endDate: "1410/05/12",
+            desc: "پرداخت شده: ۲۳٪ (۷۸.۹۳۲ میلیون تومان)",
+            isPaid: false
+        },
+        {
+            id: 9,
+            title: "وام ۲۰۰ تجارت ۱۰ درصد",
+            amount: 4.3,
+            card: "-",
+            date: "1404/06/14",
+            endDate: "1410/06/12",
+            desc: "پرداخت شده: ۲۲٪ (۵۵.۹ میلیون تومان)",
+            isPaid: false
+        },
+        {
+            id: 10,
+            title: "وام ازدواج خودم ۴ درصد",
+            amount: 1,
+            card: "-",
+            date: "1401/08/14",
+            endDate: "1411/07/14",
+            desc: "پرداخت شده: ۳۹٪ (۴۷ میلیون تومان)",
+            isPaid: false
+        },
+        {
+            id: 11,
+            title: "وام اضطراری ۳۰ اکتشاف",
+            amount: 1,
+            card: "-",
+            date: "1404/06/21",
+            endDate: "1406/11/21",
+            desc: "پرداخت شده: ۴۳٪ (۱۳ میلیون تومان)",
+            isPaid: false
+        },
+        {
+            id: 12,
+            title: "وام ۳۰۰ شهر ۱۰ درصد",
+            amount: 6.375,
+            card: "-",
+            date: "1405/03/26",
+            endDate: "1410/02/26",
+            desc: "پرداخت شده: ۷٪ (۲۵.۵ میلیون تومان)",
+            isPaid: false
+        },
+        {
+            id: 13,
+            title: "دیجی پی",
+            amount: 9.41,
+            card: "-",
+            date: "1405/03/21",
+            endDate: "1406/02/21",
+            desc: "پرداخت شده: ۳۳٪ (۳۷.۶۴ میلیون تومان)",
+            isPaid: false
+        }
+    ];
+
+    let installments = JSON.parse(localStorage.getItem('my_installments_v7'));
+    if (!installments || installments.length === 0) {
+        installments = defaultInstallments;
+        localStorage.setItem('my_installments_v7', JSON.stringify(installments));
+    }
+
+    let notes = JSON.parse(localStorage.getItem('my_notes_v7')) || [];
     let currentInstFilter = 'all';
 
     function showToast(msg) {
@@ -736,6 +878,7 @@
             amount: amountVal,
             card: document.getElementById('inst-card').value.trim() || '-',
             date: document.getElementById('inst-date').value.trim() || '-',
+            endDate: document.getElementById('inst-end-date').value.trim() || '-',
             desc: document.getElementById('inst-desc').value.trim() || '-',
             isPaid: false
         };
@@ -748,7 +891,7 @@
     });
 
     function saveInstallments() {
-        localStorage.setItem('my_installments_v3', JSON.stringify(installments));
+        localStorage.setItem('my_installments_v7', JSON.stringify(installments));
         updateStats();
     }
 
@@ -828,10 +971,16 @@
                     </div>
                     <div class="detail-row">
                         <span>📅</span>
-                        <span>موعد:</span>
+                        <span>موعد/شروع:</span>
                         <strong>${item.date}</strong>
                     </div>
-                    ${item.desc !== '-' ? `<div class="detail-row" style="grid-column: 1/-1;"><span>💬</span> <span>${item.desc}</span></div>` : ''}
+                    ${item.endDate && item.endDate !== '-' ? `
+                    <div class="detail-row">
+                        <span>🏁</span>
+                        <span>تاریخ پایان:</span>
+                        <strong>${item.endDate}</strong>
+                    </div>` : ''}
+                    ${item.desc && item.desc !== '-' ? `<div class="detail-row" style="grid-column: 1/-1;"><span>💬</span> <span>${item.desc}</span></div>` : ''}
                 </div>
 
                 <div class="inst-actions">
@@ -840,8 +989,8 @@
                     </button>
                     
                     <div class="action-btns">
-                        <button class="btn-icon" title="جابجایی به بالا" onclick="moveItem(${index}, -1, event)">⬆</button>
-                        <button class="btn-icon" title="جابجایی به پایین" onclick="moveItem(${index}, 1, event)">⬇</button>
+                        <button class="btn-icon" title="جابجایی به بالا" onclick="moveInstItem(${index}, -1, event)">⬆</button>
+                        <button class="btn-icon" title="جابجایی به پایین" onclick="moveInstItem(${index}, 1, event)">⬇</button>
                         <button class="btn-icon delete" title="حذف" onclick="deleteInstallment(${item.id}, event)">🗑️</button>
                     </div>
                 </div>
@@ -851,7 +1000,7 @@
         });
     }
 
-    function moveItem(index, direction, e) {
+    function moveInstItem(index, direction, e) {
         if (e) e.stopPropagation();
         const targetIndex = index + direction;
         if (targetIndex < 0 || targetIndex >= installments.length) return;
@@ -873,6 +1022,7 @@
         }
     }
 
+    // یادداشت‌ها
     document.getElementById('note-form').addEventListener('submit', function(e) {
         e.preventDefault();
         const newNote = {
@@ -890,7 +1040,7 @@
     });
 
     function saveNotes() {
-        localStorage.setItem('my_notes_v3', JSON.stringify(notes));
+        localStorage.setItem('my_notes_v7', JSON.stringify(notes));
     }
 
     function renderNotes() {
@@ -908,7 +1058,7 @@
             return;
         }
 
-        filtered.forEach((item) => {
+        filtered.forEach((item, index) => {
             const card = document.createElement('div');
             card.className = 'note-card';
             card.innerHTML = `
@@ -916,29 +1066,26 @@
                     <div class="note-header">
                         <div class="note-title-area">
                             <span class="drag-handle">⣿</span>
-                            <div class="note-title">${item.title}</div>
+                            <span class="note-title">${item.title}</span>
                         </div>
                         <div class="note-date">📅 ${item.date}</div>
                     </div>
                     <div class="note-body">${item.desc}</div>
                 </div>
-                <div class="note-footer">
+                <div class="note-actions">
                     <div class="action-btns">
-                        <button class="btn-icon" title="جابجایی به بالا" onclick="moveNote(${item.id}, -1, event)">⬆</button>
-                        <button class="btn-icon" title="جابجایی به پایین" onclick="moveNote(${item.id}, 1, event)">⬇</button>
+                        <button class="btn-icon" title="جابجایی به بالا" onclick="moveNoteItem(${index}, -1, event)">⬆</button>
+                        <button class="btn-icon" title="جابجایی به پایین" onclick="moveNoteItem(${index}, 1, event)">⬇</button>
                     </div>
-                    <button class="btn-icon delete" title="حذف" onclick="deleteNote(${item.id}, event)">حذف 🗑️</button>
+                    <button class="btn-icon delete" onclick="deleteNote(${item.id})">حذف 🗑️</button>
                 </div>
             `;
             container.appendChild(card);
         });
     }
 
-    function moveNote(id, direction, e) {
+    function moveNoteItem(index, direction, e) {
         if (e) e.stopPropagation();
-        const index = notes.findIndex(n => n.id === id);
-        if (index === -1) return;
-
         const targetIndex = index + direction;
         if (targetIndex < 0 || targetIndex >= notes.length) return;
 
@@ -950,8 +1097,7 @@
         renderNotes();
     }
 
-    function deleteNote(id, e) {
-        if (e) e.stopPropagation();
+    function deleteNote(id) {
         if (confirm('آیا از حذف این یادداشت مطمئن هستید؟')) {
             notes = notes.filter(item => item.id !== id);
             saveNotes();
