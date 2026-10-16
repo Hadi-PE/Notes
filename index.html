@@ -670,7 +670,8 @@
     </div>
 
     <!-- پشتیبان‌گیری و بازگردانی -->
-    <div class="footer-tools">
+    <div class="footer-tools" style="flex-wrap: wrap;">
+        <button class="btn btn-secondary" style="width: auto; font-size: 0.8rem;" onclick="resetToDefaults()">🔄 بارگذاری اولیه اقساط دفترچه</button>
         <button class="btn btn-secondary" style="width: auto; font-size: 0.8rem;" onclick="exportData()">💾 دانلود پشتیبان (Backup)</button>
         <button class="btn btn-secondary" style="width: auto; font-size: 0.8rem;" onclick="document.getElementById('import-file').click()">📂 بازیابی فایل پشتیبان</button>
         <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importData(event)">
@@ -823,13 +824,13 @@
         }
     ];
 
-    let installments = JSON.parse(localStorage.getItem('my_installments_v7'));
+    let installments = JSON.parse(localStorage.getItem('my_installments_v8'));
     if (!installments || installments.length === 0) {
         installments = defaultInstallments;
-        localStorage.setItem('my_installments_v7', JSON.stringify(installments));
+        localStorage.setItem('my_installments_v8', JSON.stringify(installments));
     }
 
-    let notes = JSON.parse(localStorage.getItem('my_notes_v7')) || [];
+    let notes = JSON.parse(localStorage.getItem('my_notes_v8')) || [];
     let currentInstFilter = 'all';
 
     function showToast(msg) {
@@ -891,7 +892,7 @@
     });
 
     function saveInstallments() {
-        localStorage.setItem('my_installments_v7', JSON.stringify(installments));
+        localStorage.setItem('my_installments_v8', JSON.stringify(installments));
         updateStats();
     }
 
@@ -930,6 +931,7 @@
     }
 
     function renderInstallments() {
+        updateStats();
         const list = document.getElementById('installment-list');
         list.innerHTML = '';
 
@@ -1040,7 +1042,7 @@
     });
 
     function saveNotes() {
-        localStorage.setItem('my_notes_v7', JSON.stringify(notes));
+        localStorage.setItem('my_notes_v8', JSON.stringify(notes));
     }
 
     function renderNotes() {
@@ -1145,6 +1147,15 @@
             }
         };
         reader.readAsText(file);
+    }
+
+        function resetToDefaults() {
+        if (confirm('آیا می‌خواهید لیست اقساط به اطلاعات اولیه دفترچه بازنشانی شود؟')) {
+            installments = [...defaultInstallments];
+            saveInstallments();
+            renderInstallments();
+            showToast('اطلاعات دفترچه مجدداً بارگذاری شد ✅');
+        }
     }
 
     renderInstallments();
