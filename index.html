@@ -36,14 +36,14 @@
         body {
             background-color: var(--bg);
             color: var(--text-main);
-            padding: 10px;
+            padding: 12px;
             direction: rtl;
             min-height: 100vh;
         }
 
         .container {
-            max-width: 860px;
-            margin: 4px auto 0;
+            max-width: 900px;
+            margin: 8px auto 0;
             padding-bottom: 50px;
         }
 
@@ -51,14 +51,14 @@
         .sync-bar {
             display: flex;
             justify-content: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .sync-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 4px 12px;
+            padding: 4px 14px;
             border-radius: 20px;
             font-size: 0.78rem;
             font-weight: bold;
@@ -98,8 +98,8 @@
         }
 
         .status-dot {
-            width: 7px;
-            height: 7px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: #94a3b8;
             display: inline-block;
@@ -126,10 +126,10 @@
         .tabs {
             display: flex;
             background: #e2e8f0;
-            padding: 3px;
+            padding: 4px;
             border-radius: 12px;
-            margin-bottom: 12px;
-            gap: 3px;
+            margin-bottom: 14px;
+            gap: 4px;
         }
 
         .tab-btn {
@@ -141,8 +141,8 @@
             font-weight: bold;
             color: var(--text-muted);
             cursor: pointer;
-            border-radius: 9px;
-            transition: all 0.2s ease;
+            border-radius: 8px;
+            transition: all 0.25s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -152,7 +152,7 @@
         .tab-btn.active {
             color: var(--primary);
             background-color: #ffffff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         }
 
         .tab-content {
@@ -166,7 +166,7 @@
         /* بنر چرخه ماهانه */
         .cycle-banner {
             background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
-            border: 1px solid #bfdbfe;
+            border: 1.5px solid #bfdbfe;
             border-radius: 12px;
             padding: 10px 14px;
             margin-bottom: 12px;
@@ -191,13 +191,13 @@
             color: white;
             border: none;
             padding: 6px 12px;
-            border-radius: 7px;
+            border-radius: 8px;
             font-size: 0.78rem;
             font-weight: bold;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             transition: all 0.2s;
         }
 
@@ -207,52 +207,89 @@
 
         .all-paid-alert {
             background: #ecfdf5;
-            border: 1px solid #a7f3d0;
-            border-radius: 10px;
+            border: 1.5px solid #a7f3d0;
+            border-radius: 12px;
             padding: 10px 14px;
             margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 8px;
-            animation: fadeIn 0.3s ease;
+            animation: fadeIn 0.4s ease;
         }
 
         .all-paid-text {
             color: #065f46;
-            font-size: 0.82rem;
+            font-size: 0.84rem;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
 
-        /* آمار خلاصه وضعیت مالی */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 12px;
+        /* بخش‌های آمار مالی (مجموع کل وام‌ها + تعهدات ماهانه) */
+        .stats-section-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 14px;
         }
 
-        .stat-card {
+        .stats-box {
             background: #ffffff;
-            padding: 10px 6px;
-            border-radius: 10px;
-            text-align: center;
             border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 12px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
+        .stats-box-header {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #334155;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            padding: 8px 4px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .stat-card.portfolio-card {
+            background: #ffffff;
+            border-color: #cbd5e1;
+        }
+
         .stat-card .num {
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 800;
             margin-top: 2px;
+            line-height: 1.3;
         }
 
         .stat-card .label {
             font-size: 0.72rem;
             color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .stat-card .sub-label {
+            font-size: 0.65rem;
+            color: #64748b;
+            margin-top: 2px;
+            line-height: 1.2;
         }
 
         /* کارت‌ها و فرم‌ها */
@@ -273,7 +310,7 @@
         }
 
         .card-title {
-            font-size: 0.98rem;
+            font-size: 0.95rem;
             font-weight: bold;
             color: #334155;
             display: flex;
@@ -301,7 +338,7 @@
         }
 
         input, textarea, select {
-            padding: 9px 10px;
+            padding: 9px 11px;
             border: 1.5px solid var(--border);
             border-radius: 8px;
             font-size: 0.88rem;
@@ -322,7 +359,7 @@
             border: none;
             padding: 10px 16px;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
@@ -343,7 +380,7 @@
             border: 1px solid var(--border);
         }
 
-        /* نوار فیلتر سه گانه اصلاح شده بدون هیچ گونه فرورفتگی */
+        /* دکمه‌های فیلتر سه ستونه */
         .filter-bar {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -356,20 +393,16 @@
         .filter-chip {
             padding: 7px 4px;
             background: #ffffff;
-            border: 1.5px solid var(--border);
+            border: 1px solid var(--border);
             border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: 0.78rem;
             color: var(--text-muted);
             cursor: pointer;
             white-space: nowrap;
             text-align: center;
             transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            user-select: none;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .filter-chip.active {
@@ -377,10 +410,9 @@
             color: white;
             border-color: var(--primary);
             font-weight: bold;
-            box-shadow: 0 2px 5px rgba(37, 99, 235, 0.2);
         }
 
-        /* فیلتر یادداشت‌ها */
+        /* فیلتر یادداشت‌ها در چهار بخش */
         .note-filter-bar {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -391,10 +423,9 @@
         .note-filter-chip {
             padding: 7px 4px;
             background: #ffffff;
-            border: 1.5px solid var(--border);
+            border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 0.78rem;
-            font-weight: 600;
             color: var(--text-muted);
             cursor: pointer;
             white-space: nowrap;
@@ -409,11 +440,11 @@
             font-weight: bold;
         }
 
-        /* کارت‌های اقساط (فشرده، شکیل، و کم‌ارتفاع) */
+        /* کارت‌های اقساط (فشرده، خوانا و شکیل) */
         .installment-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
 
         .inst-item {
@@ -423,7 +454,7 @@
             padding: 10px 12px;
             position: relative;
             box-shadow: 0 1px 4px rgba(0,0,0,0.02);
-            transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+            transition: all 0.2s;
         }
 
         .inst-item.paid {
@@ -437,14 +468,15 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 6px;
+            gap: 6px;
         }
 
         .inst-title-area {
             display: flex;
             align-items: center;
             gap: 6px;
-            min-width: 0;
             flex: 1;
+            min-width: 0;
         }
 
         .drag-handle {
@@ -465,194 +497,217 @@
             text-overflow: ellipsis;
         }
 
+        .loan-pill {
+            padding: 1px 6px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .loan-pill.rate {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+
         .inst-amount-tag {
             background: #eff6ff;
             color: var(--primary);
-            padding: 2px 8px;
+            padding: 3px 8px;
             border-radius: 12px;
             font-weight: 800;
             font-size: 0.82rem;
             white-space: nowrap;
-            flex-shrink: 0;
-            margin-right: 6px;
+            border: 1px solid #bfdbfe;
         }
 
-        /* نوار پیشرفت تسویه یکپارچه و باریک */
+        /* نوار پیشرفت تسویه فشرده */
         .progress-box-compact {
-            margin-bottom: 8px;
-            background: #f8fafc;
-            padding: 6px 8px;
-            border-radius: 8px;
-            border: 1px solid #f1f5f9;
+            background: #f1f5f9;
+            border-radius: 6px;
+            padding: 5px 8px;
+            margin-bottom: 6px;
         }
 
         .progress-header-compact {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.74rem;
+            font-size: 0.72rem;
             color: #475569;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 4px;
         }
 
         .progress-bar-bg-compact {
             background: #e2e8f0;
-            border-radius: 6px;
-            height: 6px;
+            border-radius: 4px;
+            height: 5px;
             overflow: hidden;
+            position: relative;
         }
 
         .progress-bar-fill-compact {
             height: 100%;
             background: linear-gradient(90deg, #3b82f6 0%, #10b981 100%);
-            border-radius: 6px;
-            transition: width 0.3s ease;
+            border-radius: 4px;
+            transition: width 0.35s ease;
         }
 
-        /* بخش اطلاعات جزئیات به شکل فشرده و تمیز */
-        .inst-details-compact {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 4px 10px;
-            font-size: 0.78rem;
-            color: #475569;
-            margin-bottom: 8px;
-            background: #ffffff;
-            padding: 2px 0;
-        }
-
-        .detail-item {
+        /* سطر خلاصه مالی وام (اصل، کل بازپرداخت، واریز شده) */
+        .loan-financial-summary {
             display: flex;
             align-items: center;
-            gap: 5px;
-            min-height: 24px;
+            justify-content: space-between;
+            background: #fafafa;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 0.73rem;
+            color: #334155;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+            gap: 4px;
         }
 
-        .detail-label {
-            color: var(--text-muted);
-            white-space: nowrap;
+        .loan-financial-summary span {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
         }
 
-        .detail-val {
-            font-weight: 600;
-            color: #1e293b;
+        /* جزئیات کارت، تاریخ‌ها و موعد */
+        .inst-details-compact {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 4px 8px;
+            font-size: 0.75rem;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        .detail-cell {
+            display: flex;
+            align-items: center;
+            gap: 4px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        /* بج کپی سریع شماره کارت با کلیک مستقیم */
-        .copy-pill {
+        .desc-cell {
+            grid-column: 1 / -1;
+            white-space: normal;
+            color: #64748b;
+            font-size: 0.72rem;
+            background: #f8fafc;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .copy-box-compact {
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            background: #f1f5f9;
+            background: #ffffff;
             border: 1px solid #cbd5e1;
-            padding: 2px 7px;
+            padding: 1px 6px;
             border-radius: 6px;
             cursor: pointer;
             font-family: monospace;
             direction: ltr;
-            font-size: 0.82rem;
-            font-weight: 700;
+            font-size: 0.78rem;
+            font-weight: bold;
             color: #1e293b;
-            transition: all 0.15s ease;
+            transition: all 0.2s;
             user-select: all;
         }
 
-        .copy-pill:active {
-            background: #dbeafe;
+        .copy-box-compact:active {
+            background: #e0f2fe;
             border-color: var(--primary);
-            transform: scale(0.95);
+            transform: scale(0.96);
         }
 
-        .copy-pill .copy-icon {
-            font-size: 0.75rem;
+        .copy-icon-btn {
+            font-size: 0.68rem;
             color: var(--primary);
+            font-family: 'Vazirmatn', sans-serif;
+            background: #eff6ff;
+            padding: 0 4px;
+            border-radius: 4px;
         }
 
-        /* نوار اکشن‌ها بدون تداخل و بدون شکستگی */
-        .inst-actions {
+        /* ردیف عملیات و دکمه پرداخت */
+        .inst-actions-compact {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: 4px;
             padding-top: 6px;
             border-top: 1px solid #f1f5f9;
             gap: 6px;
         }
 
-        .status-badge {
+        .status-btn-compact {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 4px;
             padding: 4px 10px;
-            border-radius: 7px;
-            font-size: 0.78rem;
+            border-radius: 6px;
+            font-size: 0.76rem;
             font-weight: bold;
             cursor: pointer;
             border: none;
             transition: all 0.2s;
             white-space: nowrap;
-            flex-shrink: 0;
-            user-select: none;
         }
 
-        .status-badge.unpaid {
+        .status-btn-compact.unpaid {
             background-color: #fef3c7;
             color: #b45309;
-            border: 1px solid #fde68a;
         }
 
-        .status-badge.paid {
+        .status-btn-compact.paid {
             background-color: #d1fae5;
             color: #047857;
-            border: 1px solid #a7f3d0;
         }
 
-        .status-badge:active {
-            transform: scale(0.96);
-        }
-
-        .action-btns {
+        .action-btns-compact {
             display: flex;
-            align-items: center;
             gap: 4px;
-            flex-shrink: 0;
+            align-items: center;
         }
 
-        .btn-icon {
+        .btn-icon-compact {
             background: #f1f5f9;
-            border: 1px solid var(--border);
+            border: none;
             padding: 4px 7px;
             border-radius: 6px;
             font-size: 0.78rem;
             cursor: pointer;
             color: #475569;
-            transition: all 0.15s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            transition: background 0.2s;
             line-height: 1;
         }
 
-        .btn-icon:hover {
+        .btn-icon-compact:hover {
             background: #e2e8f0;
         }
 
-        .btn-icon.edit {
+        .btn-icon-compact.edit {
             color: var(--primary);
             background: #eff6ff;
-            border-color: #bfdbfe;
         }
 
-        .btn-icon.delete {
+        .btn-icon-compact.delete {
             color: var(--danger);
             background: #fef2f2;
-            border-color: #fecaca;
         }
 
-        /* کارت‌های یادداشت */
+        /* کارت‌های یادداشت ۳ دسته‌ای */
         .notes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -668,7 +723,6 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            position: relative;
         }
 
         .note-header {
@@ -682,24 +736,23 @@
         .note-title-area {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .note-title {
             font-weight: bold;
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             color: #1e293b;
         }
 
         .category-badge {
             padding: 1px 6px;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 0.72rem;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
             gap: 3px;
-            white-space: nowrap;
         }
 
         .category-badge.work {
@@ -721,15 +774,15 @@
             font-size: 0.7rem;
             color: var(--text-muted);
             background: #f1f5f9;
-            padding: 1px 5px;
-            border-radius: 5px;
+            padding: 2px 6px;
+            border-radius: 4px;
             white-space: nowrap;
         }
 
         .note-body {
             font-size: 0.82rem;
             color: #334155;
-            line-height: 1.45;
+            line-height: 1.5;
             white-space: pre-line;
             margin-bottom: 8px;
         }
@@ -738,24 +791,24 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: 6px;
             padding-top: 6px;
             border-top: 1px solid #f1f5f9;
         }
 
         .search-box {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             position: relative;
         }
 
         .search-box input {
             width: 100%;
-            padding-right: 32px;
-            font-size: 0.85rem;
+            padding-right: 35px;
         }
 
         .search-icon {
             position: absolute;
-            right: 10px;
+            right: 12px;
             top: 50%;
             transform: translateY(-50%);
             color: #94a3b8;
@@ -773,11 +826,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 14px;
+            padding: 16px;
             z-index: 2000;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
         }
 
         .modal-overlay.active {
@@ -789,13 +842,13 @@
             background: #ffffff;
             border-radius: 14px;
             width: 100%;
-            max-width: 540px;
+            max-width: 580px;
             max-height: 90vh;
             overflow-y: auto;
             padding: 18px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            transform: scale(0.96);
-            transition: transform 0.2s ease;
+            transform: scale(0.95);
+            transition: transform 0.25s ease;
         }
 
         .modal-overlay.active .modal-content {
@@ -820,7 +873,7 @@
         .modal-close {
             background: none;
             border: none;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             cursor: pointer;
             color: #64748b;
             line-height: 1;
@@ -829,22 +882,22 @@
         /* Toast پیام کپی */
         #toast {
             visibility: hidden;
-            min-width: 170px;
+            min-width: 180px;
             background-color: #0f172a;
             color: #fff;
             text-align: center;
-            border-radius: 20px;
-            padding: 8px 16px;
+            border-radius: 25px;
+            padding: 9px 16px;
             position: fixed;
             z-index: 3000;
             left: 50%;
-            bottom: 25px;
+            bottom: 30px;
             transform: translateX(-50%);
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             font-weight: bold;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             opacity: 0;
-            transition: opacity 0.25s, visibility 0.25s;
+            transition: opacity 0.3s, visibility 0.3s;
         }
 
         #toast.show {
@@ -856,22 +909,22 @@
             display: flex;
             justify-content: center;
             gap: 8px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .empty-state {
             text-align: center;
-            padding: 30px 14px;
+            padding: 30px 15px;
             color: var(--text-muted);
             font-size: 0.88rem;
             background: white;
             border-radius: 12px;
             border: 1.5px dashed var(--border);
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-4px); }
+            from { opacity: 0; transform: translateY(-6px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -909,37 +962,71 @@
             </div>
             <button class="cycle-btn" onclick="confirmCycleRollover()">
                 <span>🔄</span>
-                <span>بستن ماه جاری و شروع ماه بعد</span>
+                <span>بستن دوره و شروع ماه بعد (+۱ قسط)</span>
             </button>
         </div>
 
         <!-- پیام تسویه کامل ماه جاری -->
-        <div id="all-paid-alert" class="all-paid-alert" style="display: none;">
+        <div id="all-paid-banner" class="all-paid-alert" style="display: none;">
             <div class="all-paid-text">
                 <span>🎉</span>
-                <span>تمامی اقساط این ماه پرداخت شدند!</span>
+                <span>تمامی اقساط این ماه پرداخت شدند! دوره را ببندید تا اقساط ریست شده و پیشرفت‌ها افزایش یابد.</span>
             </div>
             <button class="cycle-btn" style="background: #10b981;" onclick="confirmCycleRollover()">
                 <span>بستن ماه جاری ➡️</span>
             </button>
         </div>
 
-        <!-- آمار خلاصه وضعیت مالی ماهانه -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="label">تعهد ماه جاری</div>
-                <div class="num" id="stat-total" style="color: var(--primary);">0</div>
-                <div class="label">میلیون تومان</div>
+        <!-- دو ردیف آمار خلاصه: ۱. مجموع کل وام‌ها ۲. تعهدات ماه جاری -->
+        <div class="stats-section-group">
+            <!-- ردیف اول: مجموع کل وام‌ها و تسهیلات -->
+            <div class="stats-box">
+                <div class="stats-box-header">
+                    <span>🏛️ مجموع کل وام‌ها و بدهی‌ها</span>
+                    <span id="stat-portfolio-count" style="font-size: 0.72rem; color: #64748b; font-weight: normal;">۰ وام</span>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card portfolio-card">
+                        <div class="label">مجموع بازپرداخت</div>
+                        <div class="num" id="stat-portfolio-total" style="color: var(--primary);">0</div>
+                        <div class="sub-label" id="stat-portfolio-principal-sub">اصل: 0 م‌ت</div>
+                    </div>
+                    <div class="stat-card portfolio-card">
+                        <div class="label">کل مبالغ تسویه‌شده</div>
+                        <div class="num" id="stat-portfolio-paid" style="color: var(--success);">0</div>
+                        <div class="sub-label" id="stat-portfolio-pct">0٪ تسویه</div>
+                    </div>
+                    <div class="stat-card portfolio-card">
+                        <div class="label">مانده کل بدهی</div>
+                        <div class="num" id="stat-portfolio-remaining" style="color: var(--danger);">0</div>
+                        <div class="sub-label">میلیون تومان</div>
+                    </div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="label">پرداخت‌شده</div>
-                <div class="num" id="stat-paid" style="color: var(--success);">0</div>
-                <div class="label">میلیون تومان</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">باقی‌مانده</div>
-                <div class="num" id="stat-remaining" style="color: var(--warning);">0</div>
-                <div class="label">میلیون تومان</div>
+
+            <!-- ردیف دوم: تعهدات دوره ماه جاری -->
+            <div class="stats-box">
+                <div class="stats-box-header">
+                    <span>🗓️ تعهدات دوره ماه جاری</span>
+                    <span style="font-size: 0.72rem; color: #64748b; font-weight: normal;">اقساط ماه</span>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="label">تعهد این ماه</div>
+                        <div class="num" id="stat-total" style="color: var(--primary);">0</div>
+                        <div class="sub-label">میلیون تومان</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">پرداخت‌شده</div>
+                        <div class="num" id="stat-paid" style="color: var(--success);">0</div>
+                        <div class="sub-label">میلیون تومان</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">باقی‌مانده</div>
+                        <div class="num" id="stat-remaining" style="color: var(--warning);">0</div>
+                        <div class="sub-label">میلیون تومان</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -958,37 +1045,49 @@
                         <input type="text" id="inst-title" placeholder="مثلاً: وام مسکن ملی" required>
                     </div>
                     <div class="form-group">
-                        <label>مبلغ هر قسط (میلیون تومان) *</label>
-                        <input type="number" step="0.001" id="inst-amount" placeholder="مثلاً 5 یا 2.45" required>
+                        <label>مبلغ اصل وام (میلیون تومان)</label>
+                        <input type="number" step="0.001" id="inst-loan-amount" placeholder="مثلاً 200 یا 300" oninput="autoSuggestTotalRepay('create')">
+                    </div>
+                    <div class="form-group">
+                        <label>مبلغ هر قسط ماهانه (میلیون تومان) *</label>
+                        <input type="number" step="0.001" id="inst-amount" placeholder="مثلاً 5 یا 5.638" oninput="autoSuggestTotalRepay('create')" required>
+                    </div>
+                    <div class="form-group">
+                        <label>مبلغ کل بازپرداخت (میلیون تومان)</label>
+                        <input type="number" step="0.001" id="inst-total-repay" placeholder="اصل + سود (یا خودکار)">
+                    </div>
+                    <div class="form-group">
+                        <label>درصد سود وام (٪)</label>
+                        <input type="number" step="0.1" id="inst-interest-rate" placeholder="مثلاً 23 یا 4 یا 10">
                     </div>
                     <div class="form-group">
                         <label>شماره کارت یا شبا</label>
-                        <input type="text" id="inst-card" placeholder="6037... یا IR...">
+                        <input type="text" id="inst-card" placeholder="6037... یا IR1234...">
                     </div>
                     <div class="form-group">
-                        <label>تاریخ دریافت (شروع) *</label>
-                        <input type="text" id="inst-start-date" placeholder="مثلاً: 1401/08/14" oninput="autoCalcMonths('create')" required>
+                        <label>تاریخ دریافت وام (شروع) *</label>
+                        <input type="text" id="inst-start-date" placeholder="مثلاً: 1405/01/01" oninput="autoCalcMonths('create')" onchange="autoCalcMonths('create')" onblur="autoCalcMonths('create')" required>
                     </div>
                     <div class="form-group">
-                        <label>تاریخ تسویه (پایان) *</label>
-                        <input type="text" id="inst-end-date" placeholder="مثلاً: 1411/07/14" oninput="autoCalcMonths('create')" required>
+                        <label>تاریخ تسویه وام (پایان) *</label>
+                        <input type="text" id="inst-end-date" placeholder="مثلاً: 1406/01/01" oninput="autoCalcMonths('create')" onchange="autoCalcMonths('create')" onblur="autoCalcMonths('create')" required>
                     </div>
                     <div class="form-group">
                         <label>موعد پرداخت در ماه</label>
                         <input type="text" id="inst-payday" placeholder="مثلاً: پنجم هر ماه">
                     </div>
                     <div class="form-group">
-                        <label>تعداد کل اقساط (ماه) <small style="color: var(--primary);">(خودکار)</small></label>
-                        <input type="number" id="inst-total-months" placeholder="تعداد ماه‌ها">
+                        <label>تعداد کل اقساط (ماه) <small id="inst-months-calc-hint" style="color: var(--primary); font-weight: normal;">(خودکار: از تاریخ‌ها)</small></label>
+                        <input type="number" id="inst-total-months" placeholder="مثلاً 12 یا 60" oninput="autoSuggestTotalRepay('create')">
                     </div>
                     <div class="form-group">
-                        <label>اقساط پرداخت‌شده تا کنون</label>
-                        <input type="number" id="inst-paid-count" placeholder="مثلاً 12 (پیش‌فرض 0)">
+                        <label>اقساط پرداخت‌شده تا کنون (عدد)</label>
+                        <input type="number" id="inst-paid-count" placeholder="مثلاً 0 یا 14 (پیش‌فرض: 0)">
                     </div>
                 </div>
                 <div class="form-group" style="margin-bottom: 12px;">
                     <label>توضیحات تکمیلی (اختیاری)</label>
-                    <input type="text" id="inst-desc" placeholder="بانک، نرخ سود، ضامن یا نکات لازم...">
+                    <input type="text" id="inst-desc" placeholder="بانک، شماره قرارداد، ضامن یا نکات لازم...">
                 </div>
                 <button type="submit" class="btn">ثبت و ذخیره قسط</button>
             </form>
@@ -1003,14 +1102,14 @@
                 </div>
             </div>
 
-            <!-- دکمه‌های فیلتر سه‌گانه تمیز و بدون فرورفتگی -->
+            <!-- دکمه‌های فیلتر وضعیت ماه جاری -->
             <div class="filter-bar">
                 <button class="filter-chip active" onclick="setInstFilter('all', this)">همه اقساط</button>
                 <button class="filter-chip" onclick="setInstFilter('unpaid', this)">⏳ پرداخت نشده</button>
                 <button class="filter-chip" onclick="setInstFilter('paid', this)">✅ پرداخت شده</button>
             </div>
 
-            <!-- کارت‌های اقساط فشرده و مدرن -->
+            <!-- کارت‌های اقساط -->
             <div id="installment-list" class="installment-list">
                 <!-- به صورت پویا رندر می‌شود -->
             </div>
@@ -1048,7 +1147,7 @@
                 </div>
                 <div class="form-group" style="margin-bottom: 12px;">
                     <label>شرح و جزئیات یادداشت</label>
-                    <textarea id="note-desc" rows="2" placeholder="هزینه، جزئیات خرید، کیلومتر خودرو، نکات مهم..."></textarea>
+                    <textarea id="note-desc" rows="3" placeholder="هزینه، جزئیات خرید، کیلومتر خودرو، نکات مهم..."></textarea>
                 </div>
                 <button type="submit" class="btn">ثبت یادداشت</button>
             </form>
@@ -1090,7 +1189,7 @@
     </div>
 </div>
 
-<!-- ================= مودال ویرایش قسط / وام ================= -->
+<!-- ================= مودال ویرایش وام ================= -->
 <div id="edit-loan-modal" class="modal-overlay">
     <div class="modal-content">
         <div class="modal-header">
@@ -1105,31 +1204,43 @@
                     <input type="text" id="edit-loan-title" required>
                 </div>
                 <div class="form-group">
-                    <label>مبلغ هر قسط (میلیون تومان) *</label>
-                    <input type="number" step="0.001" id="edit-loan-amount" required>
+                    <label>مبلغ اصل وام (میلیون تومان)</label>
+                    <input type="number" step="0.001" id="edit-loan-principal" oninput="autoSuggestTotalRepay('edit')">
+                </div>
+                <div class="form-group">
+                    <label>مبلغ هر قسط ماهانه (میلیون تومان) *</label>
+                    <input type="number" step="0.001" id="edit-loan-amount" oninput="autoSuggestTotalRepay('edit')" required>
+                </div>
+                <div class="form-group">
+                    <label>مبلغ کل بازپرداخت (میلیون تومان)</label>
+                    <input type="number" step="0.001" id="edit-loan-total-repay">
+                </div>
+                <div class="form-group">
+                    <label>درصد سود وام (٪)</label>
+                    <input type="number" step="0.1" id="edit-loan-interest-rate">
                 </div>
                 <div class="form-group">
                     <label>شماره کارت یا شبا</label>
                     <input type="text" id="edit-loan-card">
                 </div>
                 <div class="form-group">
-                    <label>تاریخ دریافت (شروع) *</label>
-                    <input type="text" id="edit-loan-start-date" oninput="autoCalcMonths('edit')" required>
+                    <label>تاریخ دریافت وام (شروع) *</label>
+                    <input type="text" id="edit-loan-start-date" oninput="autoCalcMonths('edit')" onchange="autoCalcMonths('edit')" onblur="autoCalcMonths('edit')" required>
                 </div>
                 <div class="form-group">
-                    <label>تاریخ تسویه (پایان) *</label>
-                    <input type="text" id="edit-loan-end-date" oninput="autoCalcMonths('edit')" required>
+                    <label>تاریخ تسویه وام (پایان) *</label>
+                    <input type="text" id="edit-loan-end-date" oninput="autoCalcMonths('edit')" onchange="autoCalcMonths('edit')" onblur="autoCalcMonths('edit')" required>
                 </div>
                 <div class="form-group">
                     <label>موعد پرداخت در ماه</label>
                     <input type="text" id="edit-loan-payday">
                 </div>
                 <div class="form-group">
-                    <label>تعداد کل اقساط (ماه)</label>
-                    <input type="number" id="edit-loan-total-months" required>
+                    <label>تعداد کل اقساط (ماه) *</label>
+                    <input type="number" id="edit-loan-total-months" oninput="autoSuggestTotalRepay('edit')" required>
                 </div>
                 <div class="form-group">
-                    <label>اقساط پرداخت‌شده تا کنون</label>
+                    <label>اقساط پرداخت‌شده تا کنون (عدد) *</label>
                     <input type="number" id="edit-loan-paid-count" required>
                 </div>
             </div>
@@ -1193,16 +1304,33 @@
         document.getElementById('btn-tab-' + tabId).classList.add('active');
     }
 
-    // تاریخ خوانی شمسی
+    // تبدیل اعداد فارسی و عربی به انگلیسی برای پردازش دقیق
+    function toEnglishDigits(str) {
+        if (!str) return '';
+        const fa = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+        const ar = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+        return str.toString()
+            .replace(/[۰-۹]/g, w => fa.indexOf(w))
+            .replace(/[٠-٩]/g, w => ar.indexOf(w));
+    }
+
+    // تاریخ خوانی دقیق شمسی با پشتیبانی از تمام اعداد فارسی، خط تیره، اسلش و فاصله‌ها
     function parseJalali(str) {
         if (!str) return null;
-        const parts = str.trim().split(/[\/\-\.]/).map(p => parseInt(p, 10));
-        if (parts.length >= 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
-            return {
-                y: parts[0],
-                m: parts[1],
-                d: parts[2] ? parts[2] : 1
-            };
+        const clean = toEnglishDigits(str).trim();
+        const parts = clean.split(/[^0-9]+/).filter(p => p.length > 0).map(p => parseInt(p, 10));
+        if (parts.length >= 2) {
+            let y = parts[0];
+            let m = parts[1];
+            let d = parts.length >= 3 ? parts[2] : 1;
+            if (y < 100) y += 1400; // پشتیبانی از سال‌های دو رقمی مثل 05 -> 1405
+            if (y >= 1300 && m >= 1 && m <= 12) {
+                return {
+                    y: y,
+                    m: m,
+                    d: (d >= 1 && d <= 31) ? d : 1
+                };
+            }
         }
         return null;
     }
@@ -1242,36 +1370,70 @@
         return monthKey;
     }
 
-    // محاسبه خودکار تعداد ماه‌ها هنگام وارد کردن تاریخ در فرم
+    // محاسبه خودکار تعداد ماه‌ها هنگام وارد کردن تاریخ دریافت و تسویه
     function autoCalcMonths(type) {
-        let startVal, endVal, targetInput;
+        let startVal, endVal, targetInput, hintEl;
         if (type === 'create') {
             startVal = document.getElementById('inst-start-date').value;
             endVal = document.getElementById('inst-end-date').value;
             targetInput = document.getElementById('inst-total-months');
+            hintEl = document.getElementById('inst-months-calc-hint');
         } else {
             startVal = document.getElementById('edit-loan-start-date').value;
             endVal = document.getElementById('edit-loan-end-date').value;
             targetInput = document.getElementById('edit-loan-total-months');
+            hintEl = null;
         }
 
         const months = jalaliMonthDiff(startVal, endVal);
         if (months > 0) {
             targetInput.value = months;
+            if (hintEl) {
+                hintEl.innerText = `(محاسبه شد: ${months.toLocaleString('fa-IR')} ماه)`;
+                hintEl.style.color = '#10b981';
+            }
+            autoSuggestTotalRepay(type);
+        }
+    }
+
+    // پیشنهاد خودکار مبلغ کل بازپرداخت بر اساس مبلغ قسط و تعداد ماه‌ها
+    function autoSuggestTotalRepay(type) {
+        let amountEl, monthsEl, repayEl;
+        if (type === 'create') {
+            amountEl = document.getElementById('inst-amount');
+            monthsEl = document.getElementById('inst-total-months');
+            repayEl = document.getElementById('inst-total-repay');
+        } else {
+            amountEl = document.getElementById('edit-loan-amount');
+            monthsEl = document.getElementById('edit-loan-total-months');
+            repayEl = document.getElementById('edit-loan-total-repay');
+        }
+
+        const amt = parseFloat(amountEl.value) || 0;
+        const months = parseInt(monthsEl.value, 10) || 0;
+
+        if (amt > 0 && months > 0) {
+            if (!repayEl.value || parseFloat(repayEl.value) === 0 || repayEl.dataset.autoFilled === 'true') {
+                const total = (amt * months).toFixed(3).replace(/\.?0+$/, '');
+                repayEl.value = total;
+                repayEl.dataset.autoFilled = 'true';
+            }
         }
     }
 
     // متغیرهای حالت برنامه
-    let installments = JSON.parse(localStorage.getItem('my_installments_v12')) || 
+    let installments = JSON.parse(localStorage.getItem('my_installments_v13')) || 
+                       JSON.parse(localStorage.getItem('my_installments_v12')) || 
                        JSON.parse(localStorage.getItem('my_installments_v11')) || [];
-    let notes = JSON.parse(localStorage.getItem('my_notes_v12')) || 
+    let notes = JSON.parse(localStorage.getItem('my_notes_v13')) || 
+                JSON.parse(localStorage.getItem('my_notes_v12')) || 
                 JSON.parse(localStorage.getItem('my_notes_v11')) || [];
-    let currentCycleMonth = localStorage.getItem('my_ledger_cycle_month_v12') || 
-                            localStorage.getItem('my_ledger_cycle_month_v11') || 
+    let currentCycleMonth = localStorage.getItem('my_ledger_cycle_month_v13') || 
+                            localStorage.getItem('my_ledger_cycle_month_v12') || 
                             getCurrentJalali().monthKey;
     let currentInstFilter = 'all';
     let currentNoteCategoryFilter = 'all';
-    let hasPendingSync = localStorage.getItem('my_ledger_pending_sync_v12') === 'true';
+    let hasPendingSync = localStorage.getItem('my_ledger_pending_sync_v13') === 'true';
     let isSyncing = false;
 
     // بررسی خودکار تغییر ماه شمسی در ابتدای ورود
@@ -1281,7 +1443,7 @@
             const oldName = getMonthName(currentCycleMonth);
             const newName = getMonthName(todayJalali.monthKey);
             setTimeout(() => {
-                if (confirm(`🗓️ ماه جدید شمسی (${newName}) فرا رسیده است.\nآیا دوره به ${newName} منتقل شود؟`)) {
+                if (confirm(`🗓️ ماه جدید شمسی (${newName}) آغاز شده است.\nآیا مایلید دوره اقساط به ${newName} منتقل شود و ۱ قسط به پیشرفت وام‌های شما افزوده گردد؟`)) {
                     rolloverMonthlyCycle(todayJalali.monthKey);
                 }
             }, 600);
@@ -1317,7 +1479,7 @@
 
             if (response.ok) {
                 hasPendingSync = false;
-                localStorage.setItem('my_ledger_pending_sync_v12', 'false');
+                localStorage.setItem('my_ledger_pending_sync_v13', 'false');
                 updateSyncBadge('online', '☁️ متصل و همگام آنلاین');
             } else {
                 throw new Error('Server status: ' + response.status);
@@ -1325,7 +1487,7 @@
         } catch (err) {
             console.warn('Sync push error:', err);
             hasPendingSync = true;
-            localStorage.setItem('my_ledger_pending_sync_v12', 'true');
+            localStorage.setItem('my_ledger_pending_sync_v13', 'true');
             if (!navigator.onLine) {
                 updateSyncBadge('offline', '⚠️ آفلاین (اطلاعات در گوشی امن است)');
             } else {
@@ -1359,18 +1521,18 @@
                 const data = await response.json();
                 if (data && (Array.isArray(data.installments) || Array.isArray(data.notes))) {
                     const cloudUpdatedAt = data.updatedAt || 0;
-                    const localUpdatedAt = parseInt(localStorage.getItem('my_ledger_updated_at_v12') || '0', 10);
+                    const localUpdatedAt = parseInt(localStorage.getItem('my_ledger_updated_at_v13') || '0', 10);
 
-                    if (cloudUpdatedAt >= localUpdatedAt || !localStorage.getItem('my_installments_v12')) {
+                    if (cloudUpdatedAt >= localUpdatedAt || !localStorage.getItem('my_installments_v13')) {
                         installments = Array.isArray(data.installments) ? data.installments : [];
                         notes = Array.isArray(data.notes) ? data.notes : [];
                         if (data.currentCycleMonth) {
                             currentCycleMonth = data.currentCycleMonth;
-                            localStorage.setItem('my_ledger_cycle_month_v12', currentCycleMonth);
+                            localStorage.setItem('my_ledger_cycle_month_v13', currentCycleMonth);
                         }
-                        localStorage.setItem('my_installments_v12', JSON.stringify(installments));
-                        localStorage.setItem('my_notes_v12', JSON.stringify(notes));
-                        localStorage.setItem('my_ledger_updated_at_v12', cloudUpdatedAt.toString());
+                        localStorage.setItem('my_installments_v13', JSON.stringify(installments));
+                        localStorage.setItem('my_notes_v13', JSON.stringify(notes));
+                        localStorage.setItem('my_ledger_updated_at_v13', cloudUpdatedAt.toString());
                         renderInstallments();
                         renderNotes();
                     }
@@ -1413,66 +1575,46 @@
         setTimeout(() => toast.classList.remove('show'), 2000);
     }
 
-    // کپی قطعی و هوشمند شماره کارت/شبا در تمام مرورگرها و موبایل‌ها
+    // کپی سریع شماره کارت با یک لمس یا کلیک
     function copyToClipboard(text, e) {
-        if (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        if (!text || text === '-' || text.trim() === '') {
-            showToast('شماره کارتی ثبت نشده است ⚠️');
+        if (e) e.stopPropagation();
+        if (!text || text === '-') {
+            showToast('شماره کارتی ثبت نشده است');
             return;
         }
-        const cleanText = text.replace(/[\s\-_]/g, '').trim();
-
-        let copied = false;
-        try {
-            const textArea = document.createElement("textarea");
-            textArea.value = cleanText;
-            textArea.style.position = "fixed";
-            textArea.style.top = "0";
-            textArea.style.left = "0";
-            textArea.style.width = "2em";
-            textArea.style.height = "2em";
-            textArea.style.padding = "0";
-            textArea.style.border = "none";
-            textArea.style.outline = "none";
-            textArea.style.boxShadow = "none";
-            textArea.style.background = "transparent";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            textArea.setSelectionRange(0, 99999);
-            copied = document.execCommand("copy");
-            document.body.removeChild(textArea);
-        } catch (err) {
-            copied = false;
-        }
-
-        if (!copied && navigator.clipboard && window.isSecureContext) {
+        const cleanText = text.replace(/[\s-]/g, '');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(cleanText).then(() => {
-                showToast(`کپی شد: ${cleanText} 📋`);
-            }).catch(() => {
-                showToast(`کپی شد: ${cleanText} 📋`);
-            });
+                showToast(`شماره کپی شد: ${cleanText} 📋`);
+            }).catch(() => fallbackCopy(cleanText));
         } else {
-            showToast(`کپی شد: ${cleanText} 📋`);
+            fallbackCopy(cleanText);
         }
+    }
+
+    function fallbackCopy(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        showToast(`شماره کپی شد: ${text} 📋`);
     }
 
     // ذخیره در حافظه محلی و ارسال به سرور
     function saveState() {
-        localStorage.setItem('my_installments_v12', JSON.stringify(installments));
-        localStorage.setItem('my_notes_v12', JSON.stringify(notes));
-        localStorage.setItem('my_ledger_cycle_month_v12', currentCycleMonth);
-        localStorage.setItem('my_ledger_updated_at_v12', Date.now().toString());
+        localStorage.setItem('my_installments_v13', JSON.stringify(installments));
+        localStorage.setItem('my_notes_v13', JSON.stringify(notes));
+        localStorage.setItem('my_ledger_cycle_month_v13', currentCycleMonth);
+        localStorage.setItem('my_ledger_updated_at_v13', Date.now().toString());
         hasPendingSync = true;
-        localStorage.setItem('my_ledger_pending_sync_v12', 'true');
+        localStorage.setItem('my_ledger_pending_sync_v13', 'true');
         updateStats();
         pushToCloud();
     }
 
-    // ثبت قسط جدید
+    // ثبت وام / قسط جدید
     document.getElementById('installment-form').addEventListener('submit', function(e) {
         e.preventDefault();
         const startVal = document.getElementById('inst-start-date').value.trim();
@@ -1485,12 +1627,22 @@
         if (totalMonths <= 0) totalMonths = 1;
 
         const paidCount = parseInt(document.getElementById('inst-paid-count').value, 10) || 0;
-        const amountVal = parseFloat(document.getElementById('inst-amount').value) || 0;
+        const monthlyAmount = parseFloat(document.getElementById('inst-amount').value) || 0;
+        const loanPrincipal = parseFloat(document.getElementById('inst-loan-amount').value) || 0;
+        let totalRepay = parseFloat(document.getElementById('inst-total-repay').value) || 0;
+        if (totalRepay <= 0 && monthlyAmount > 0) {
+            totalRepay = monthlyAmount * totalMonths;
+        }
+
+        const interestRate = document.getElementById('inst-interest-rate').value.trim();
 
         const newInst = {
             id: Date.now(),
             title: document.getElementById('inst-title').value.trim(),
-            amount: amountVal,
+            loanAmount: loanPrincipal,
+            amount: monthlyAmount,
+            totalRepay: totalRepay,
+            interestRate: interestRate,
             card: document.getElementById('inst-card').value.trim() || '-',
             startDate: startVal,
             endDate: endVal,
@@ -1505,31 +1657,38 @@
         saveState();
         renderInstallments();
         this.reset();
+        document.getElementById('inst-total-repay').removeAttribute('data-auto-filled');
+        document.getElementById('inst-months-calc-hint').innerText = '(خودکار: از تاریخ‌ها)';
+        document.getElementById('inst-months-calc-hint').style.color = 'var(--primary)';
         showToast('وام / قسط با موفقیت ثبت شد ✅');
     });
 
-    // تغییر وضعیت پرداخت قسط در ماه جاری و به‌روزرسانی آنی درصد پیشرفت
+    // تغییر وضعیت پرداخت قسط در ماه جاری به همراه به‌روزرسانی برخط پیشرفت تسویه
     function togglePaidStatus(id, e) {
         if (e) e.stopPropagation();
         const inst = installments.find(item => item.id === id);
-        if (inst) {
-            inst.isPaidThisMonth = !inst.isPaidThisMonth;
-            
-            // افزایش یا کاهش در لحظه قسط پرداخت‌شده
-            if (inst.isPaidThisMonth) {
-                inst.paidCount = Math.min(inst.totalMonths, (inst.paidCount || 0) + 1);
-            } else {
-                inst.paidCount = Math.max(0, (inst.paidCount || 0) - 1);
-            }
+        if (!inst) return;
 
-            saveState();
-            renderInstallments();
-            checkAllPaidCelebration();
+        inst.isPaidThisMonth = !inst.isPaidThisMonth;
+
+        // در صورت پرداخت قسط، ۱ قسط به پیشرفت اضافه می‌شود؛ در صورت لغو پرداخت، ۱ قسط کاسته می‌شود
+        if (inst.isPaidThisMonth) {
+            if (inst.paidCount < inst.totalMonths) {
+                inst.paidCount += 1;
+            }
+        } else {
+            if (inst.paidCount > 0) {
+                inst.paidCount -= 1;
+            }
         }
+
+        saveState();
+        renderInstallments();
+        checkAllPaidCelebration();
     }
 
     function checkAllPaidCelebration() {
-        const banner = document.getElementById('all-paid-alert');
+        const banner = document.getElementById('all-paid-banner');
         if (installments.length > 0 && installments.every(item => item.isPaidThisMonth)) {
             banner.style.display = 'flex';
         } else {
@@ -1540,11 +1699,11 @@
     // بستن دوره ماه جاری و شروع ماه جدید
     function confirmCycleRollover() {
         if (installments.length === 0) {
-            alert('هنوز هیچ وامی ثبت نشده است.');
+            alert('هنوز هیچ وامی برای بستن دوره ثبت نشده است.');
             return;
         }
 
-        const msg = `آیا از بستن دوره ${getMonthName(currentCycleMonth)} و رفتن به ماه آینده مطمئن هستید؟\n\nتمام اقساط برای ماه جدید به وضعیت «پرداخت نشده» بازمی‌گردند تا برای ماه آینده تیک بزنید.`;
+        const msg = `آیا از بستن دوره ${getMonthName(currentCycleMonth)} مطمئن هستید؟\n\nبا تایید این مرحله:\n۱. وضعیت اقساط برای ماه آینده «پرداخت نشده» می‌شود.\n۲. پیشرفت تسویه و تاریخچه اقساط ذخیره می‌ماند.`;
         if (confirm(msg)) {
             rolloverMonthlyCycle();
         }
@@ -1552,6 +1711,10 @@
 
     function rolloverMonthlyCycle(targetNewMonth = null) {
         installments.forEach(item => {
+            // اگر قسط این ماه پرداخت نشده باقی مانده بود، کاربر دوره را بسته پس فرض بر پرداخت گرفته می‌شود
+            if (!item.isPaidThisMonth && item.paidCount < item.totalMonths) {
+                item.paidCount += 1;
+            }
             item.isPaidThisMonth = false;
         });
 
@@ -1580,18 +1743,63 @@
         renderInstallments();
     }
 
+    // محاسبه هر دو آمار: مجموع کل وام‌ها + تعهدات ماه جاری
     function updateStats() {
         let totalMonthly = 0;
         let paidMonthly = 0;
 
+        let portfolioTotalRepay = 0;
+        let portfolioPrincipal = 0;
+        let portfolioPaid = 0;
+
         installments.forEach(item => {
-            const amt = parseFloat(item.amount) || 0;
-            totalMonthly += amt;
-            if (item.isPaidThisMonth) paidMonthly += amt;
+            const monthlyAmt = parseFloat(item.amount) || 0;
+            const totalMonths = parseInt(item.totalMonths, 10) || 1;
+            const paidCount = parseInt(item.paidCount, 10) || 0;
+            const principal = parseFloat(item.loanAmount) || 0;
+
+            // محاسبه مبلغ کل بازپرداخت
+            let totalRepay = parseFloat(item.totalRepay) || 0;
+            if (totalRepay <= 0) {
+                totalRepay = monthlyAmt * totalMonths;
+                if (totalRepay <= 0 && principal > 0) totalRepay = principal;
+            }
+
+            // مبالغ پرداخت شده تا کنون از کل وام
+            let loanPaidAmount = 0;
+            if (totalRepay > 0 && totalMonths > 0) {
+                loanPaidAmount = (paidCount / totalMonths) * totalRepay;
+            } else {
+                loanPaidAmount = monthlyAmt * paidCount;
+            }
+            if (loanPaidAmount > totalRepay && totalRepay > 0) {
+                loanPaidAmount = totalRepay;
+            }
+
+            portfolioTotalRepay += totalRepay;
+            portfolioPrincipal += principal;
+            portfolioPaid += loanPaidAmount;
+
+            // آمار تعهدات ماه جاری
+            totalMonthly += monthlyAmt;
+            if (item.isPaidThisMonth) {
+                paidMonthly += monthlyAmt;
+            }
         });
 
-        const remainingMonthly = totalMonthly - paidMonthly;
+        const remainingMonthly = Math.max(0, totalMonthly - paidMonthly);
+        const portfolioRemaining = Math.max(0, portfolioTotalRepay - portfolioPaid);
+        const portfolioPct = portfolioTotalRepay > 0 ? Math.round((portfolioPaid / portfolioTotalRepay) * 100) : 0;
 
+        // درج در المان‌های بخش ۱: مجموع کل وام‌ها
+        document.getElementById('stat-portfolio-count').innerText = `${installments.length.toLocaleString('fa-IR')} فقره وام`;
+        document.getElementById('stat-portfolio-total').innerText = portfolioTotalRepay.toLocaleString('fa-IR', { maximumFractionDigits: 2 });
+        document.getElementById('stat-portfolio-principal-sub').innerText = `اصل: ${portfolioPrincipal.toLocaleString('fa-IR', { maximumFractionDigits: 2 })} م‌ت`;
+        document.getElementById('stat-portfolio-paid').innerText = portfolioPaid.toLocaleString('fa-IR', { maximumFractionDigits: 2 });
+        document.getElementById('stat-portfolio-pct').innerText = `${portfolioPct.toLocaleString('fa-IR')}٪ تسویه کل`;
+        document.getElementById('stat-portfolio-remaining').innerText = portfolioRemaining.toLocaleString('fa-IR', { maximumFractionDigits: 2 });
+
+        // درج در المان‌های بخش ۲: تعهدات ماه جاری
         document.getElementById('stat-total').innerText = totalMonthly.toLocaleString('fa-IR', { maximumFractionDigits: 3 });
         document.getElementById('stat-paid').innerText = paidMonthly.toLocaleString('fa-IR', { maximumFractionDigits: 3 });
         document.getElementById('stat-remaining').innerText = remainingMonthly.toLocaleString('fa-IR', { maximumFractionDigits: 3 });
@@ -1600,7 +1808,7 @@
         checkAllPaidCelebration();
     }
 
-    // رندر کارت‌های اقساط (فشرده، شکیل و بدون اسکرول زیاد)
+    // رندر کارت‌های اقساط (فشرده، شکیل و پر اطلاعات)
     function renderInstallments() {
         updateStats();
         const list = document.getElementById('installment-list');
@@ -1619,7 +1827,7 @@
                     <div class="empty-state">
                         <div style="font-size: 1.8rem; margin-bottom: 6px;">💳</div>
                         <strong>لیست اقساط شما در حال حاضر خالی است.</strong><br>
-                        اطلاعات وام‌های خود را در فرم بالا وارد کنید تا محاسبات و همگام‌سازی آغاز شود.
+                        از فرم بالا می‌توانید وام‌ها و اقساط خود را وارد کنید تا محاسبات مبالغ، درصدها و بازه‌ها خودکار انجام شود.
                     </div>`;
             } else {
                 list.innerHTML = '<div class="empty-state">هیچ قسطی در این دسته‌بندی وجود ندارد.</div>';
@@ -1631,73 +1839,90 @@
             const isPaid = item.isPaidThisMonth;
             const amountFormatted = Number(item.amount).toLocaleString('fa-IR', { maximumFractionDigits: 3 });
 
-            // درصد پیشرفت تسویه وام
+            // مبالغ اصل و بازپرداخت
+            const loanPrincipal = parseFloat(item.loanAmount) || 0;
+            const principalFormatted = loanPrincipal > 0 ? loanPrincipal.toLocaleString('fa-IR', { maximumFractionDigits: 2 }) : '-';
+
             const totalM = item.totalMonths || 1;
+            let totalRepay = parseFloat(item.totalRepay) || (item.amount * totalM);
+            const totalRepayFormatted = totalRepay > 0 ? totalRepay.toLocaleString('fa-IR', { maximumFractionDigits: 2 }) : '-';
+
             const paidCount = item.paidCount || 0;
             const progress = Math.min(100, Math.round((paidCount / totalM) * 100));
             const remainingCount = Math.max(0, totalM - paidCount);
+
+            // محاسبه واریز شده و مانده وام
+            let paidSum = 0;
+            if (totalRepay > 0 && totalM > 0) {
+                paidSum = (paidCount / totalM) * totalRepay;
+            } else {
+                paidSum = item.amount * paidCount;
+            }
+            const remainingDebt = Math.max(0, totalRepay - paidSum);
+            const paidSumFormatted = paidSum.toLocaleString('fa-IR', { maximumFractionDigits: 2 });
+            const remainingDebtFormatted = remainingDebt.toLocaleString('fa-IR', { maximumFractionDigits: 2 });
 
             const itemEl = document.createElement('div');
             itemEl.className = `inst-item ${isPaid ? 'paid' : ''}`;
 
             itemEl.innerHTML = `
-                <!-- سطر بالای کارت: عنوان و مبلغ قسط -->
                 <div class="inst-top">
                     <div class="inst-title-area">
-                        <span class="drag-handle" title="جابجایی">⣿</span>
+                        <span class="drag-handle">⣿</span>
                         <span class="inst-title">${item.title}</span>
+                        ${item.interestRate ? `<span class="loan-pill rate">${item.interestRate}٪ سود</span>` : ''}
                     </div>
-                    <div class="inst-amount-tag">${amountFormatted} م‌ت/ماه</div>
+                    <div class="inst-amount-tag">${amountFormatted} م‌ت / ماه</div>
                 </div>
 
-                <!-- نوار پیشرفت تسویه باریک و یکپارچه -->
+                <!-- نوار پیشرفت تسویه فشرده -->
                 <div class="progress-box-compact">
                     <div class="progress-header-compact">
-                        <span>📊 تسویه: <strong>${progress.toLocaleString('fa-IR')}٪</strong></span>
-                        <span>${paidCount.toLocaleString('fa-IR')} از ${totalM.toLocaleString('fa-IR')} قسط (${remainingCount.toLocaleString('fa-IR')} مانده)</span>
+                        <span>تسویه: <strong>${progress.toLocaleString('fa-IR')}٪</strong> (${paidCount.toLocaleString('fa-IR')} از ${totalM.toLocaleString('fa-IR')} قسط)</span>
+                        <span>مانده: <strong>${remainingCount.toLocaleString('fa-IR')} قسط</strong> (${remainingDebtFormatted} م‌ت)</span>
                     </div>
                     <div class="progress-bar-bg-compact">
                         <div class="progress-bar-fill-compact" style="width: ${progress}%;"></div>
                     </div>
                 </div>
 
-                <!-- اطلاعات جمع و جور و مرتب -->
-                <div class="inst-details-compact">
-                    <div class="detail-item">
-                        <span class="detail-label">💳 کارت/شبا:</span>
-                        ${item.card && item.card !== '-' ? `
-                            <span class="copy-pill" onclick="copyToClipboard('${item.card}', event)" title="کلیک برای کپی فوری">
-                                ${item.card} <span class="copy-icon">📋 کپی</span>
-                            </span>
-                        ` : '<span class="detail-val">-</span>'}
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">⏰ موعد:</span>
-                        <span class="detail-val">${item.payDay || '-'}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">🗓️ بازه:</span>
-                        <span class="detail-val">${item.startDate || '-'} تا ${item.endDate || '-'}</span>
-                    </div>
-                    ${item.desc && item.desc !== '-' ? `
-                        <div class="detail-item" style="grid-column: 1 / -1;">
-                            <span class="detail-label">💬 نکته:</span>
-                            <span class="detail-val">${item.desc}</span>
-                        </div>
-                    ` : ''}
+                <!-- سطر خلاصه مالی وام -->
+                <div class="loan-financial-summary">
+                    <span>اصل وام: <strong>${principalFormatted} م‌ت</strong></span>
+                    <span style="color:#cbd5e1;">|</span>
+                    <span>کل بازپرداخت: <strong>${totalRepayFormatted} م‌ت</strong></span>
+                    <span style="color:#cbd5e1;">|</span>
+                    <span>واریز شده: <strong style="color: var(--success);">${paidSumFormatted} م‌ت</strong></span>
                 </div>
 
-                <!-- سطر پایین: دکمه وضعیت خلاصه + دکمه‌های عملیاتی بدون تداخل -->
-                <div class="inst-actions">
-                    <button class="status-badge ${isPaid ? 'paid' : 'unpaid'}" onclick="togglePaidStatus(${item.id}, event)" title="کلیک برای تغییر وضعیت">
+                <div class="inst-details-compact">
+                    <div class="detail-cell">
+                        <span>💳</span>
+                        <span class="copy-box-compact" onclick="copyToClipboard('${item.card}', event)" title="کلیک برای کپی شماره کارت">
+                            ${item.card} <span class="copy-icon-btn">📋 کپی</span>
+                        </span>
+                    </div>
+                    <div class="detail-cell">
+                        <span>🗓️</span>
+                        <span>${item.startDate || '-'} تا ${item.endDate || '-'}</span>
+                    </div>
+                    <div class="detail-cell">
+                        <span>⏰</span>
+                        <span>موعد: <strong>${item.payDay || '-'}</strong></span>
+                    </div>
+                    ${item.desc && item.desc !== '-' ? `<div class="detail-cell desc-cell"><span>💬 ${item.desc}</span></div>` : ''}
+                </div>
+
+                <div class="inst-actions-compact">
+                    <button class="status-btn-compact ${isPaid ? 'paid' : 'unpaid'}" onclick="togglePaidStatus(${item.id}, event)">
                         ${isPaid ? '✅ پرداخت شده' : '⏳ پرداخت نشده'}
                     </button>
                     
-                    <div class="action-btns">
-                        <button class="btn-icon edit" title="ویرایش وام" onclick="openEditLoanModal(${item.id}, event)">✏️</button>
-                        <button class="btn-icon" title="جابجایی به بالا" onclick="moveInstItem(${index}, -1, event)">⬆</button>
-                        <button class="btn-icon" title="جابجایی به پایین" onclick="moveInstItem(${index}, 1, event)">⬇</button>
-                        <button class="btn-icon delete" title="حذف" onclick="deleteInstallment(${item.id}, event)">🗑️</button>
+                    <div class="action-btns-compact">
+                        <button class="btn-icon-compact edit" title="ویرایش وام" onclick="openEditLoanModal(${item.id}, event)">✏️</button>
+                        <button class="btn-icon-compact" title="جابجایی به بالا" onclick="moveInstItem(${index}, -1, event)">⬆</button>
+                        <button class="btn-icon-compact" title="جابجایی به پایین" onclick="moveInstItem(${index}, 1, event)">⬇</button>
+                        <button class="btn-icon-compact delete" title="حذف" onclick="deleteInstallment(${item.id}, event)">🗑️</button>
                     </div>
                 </div>
             `;
@@ -1736,7 +1961,10 @@
 
         document.getElementById('edit-loan-id').value = item.id;
         document.getElementById('edit-loan-title').value = item.title;
+        document.getElementById('edit-loan-principal').value = item.loanAmount || '';
         document.getElementById('edit-loan-amount').value = item.amount;
+        document.getElementById('edit-loan-total-repay').value = item.totalRepay || '';
+        document.getElementById('edit-loan-interest-rate').value = item.interestRate || '';
         document.getElementById('edit-loan-card').value = item.card === '-' ? '' : item.card;
         document.getElementById('edit-loan-start-date').value = item.startDate || '';
         document.getElementById('edit-loan-end-date').value = item.endDate || '';
@@ -1759,7 +1987,10 @@
         if (!item) return;
 
         item.title = document.getElementById('edit-loan-title').value.trim();
+        item.loanAmount = parseFloat(document.getElementById('edit-loan-principal').value) || 0;
         item.amount = parseFloat(document.getElementById('edit-loan-amount').value) || 0;
+        item.totalRepay = parseFloat(document.getElementById('edit-loan-total-repay').value) || (item.amount * (parseInt(document.getElementById('edit-loan-total-months').value, 10) || 1));
+        item.interestRate = document.getElementById('edit-loan-interest-rate').value.trim();
         item.card = document.getElementById('edit-loan-card').value.trim() || '-';
         item.startDate = document.getElementById('edit-loan-start-date').value.trim();
         item.endDate = document.getElementById('edit-loan-end-date').value.trim();
@@ -1846,12 +2077,12 @@
                     <div class="note-body">${item.desc || ''}</div>
                 </div>
                 <div class="note-actions">
-                    <div class="action-btns">
-                        <button class="btn-icon edit" title="ویرایش" onclick="openEditNoteModal(${item.id})">✏️</button>
-                        <button class="btn-icon" title="بالا" onclick="moveNoteItem(${index}, -1, event)">⬆</button>
-                        <button class="btn-icon" title="پایین" onclick="moveNoteItem(${index}, 1, event)">⬇</button>
+                    <div class="action-btns-compact">
+                        <button class="btn-icon-compact edit" title="ویرایش" onclick="openEditNoteModal(${item.id})">✏️</button>
+                        <button class="btn-icon-compact" title="بالا" onclick="moveNoteItem(${index}, -1, event)">⬆</button>
+                        <button class="btn-icon-compact" title="پایین" onclick="moveNoteItem(${index}, 1, event)">⬇</button>
                     </div>
-                    <button class="btn-icon delete" onclick="deleteNote(${item.id})">حذف 🗑️</button>
+                    <button class="btn-icon-compact delete" onclick="deleteNote(${item.id})">حذف 🗑️</button>
                 </div>
             `;
             container.appendChild(card);
@@ -1966,6 +2197,27 @@
         if (e.target === noteModal) closeEditNoteModal();
     });
 
+    // اتصال شنوندگان رویداد برای محاسبه تضمینی تاریخ‌ها
+    function bindDateListeners() {
+        ['inst-start-date', 'inst-end-date'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                ['input', 'change', 'blur', 'keyup'].forEach(ev => {
+                    el.addEventListener(ev, () => autoCalcMonths('create'));
+                });
+            }
+        });
+
+        ['edit-loan-start-date', 'edit-loan-end-date'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                ['input', 'change', 'blur', 'keyup'].forEach(ev => {
+                    el.addEventListener(ev, () => autoCalcMonths('edit'));
+                });
+            }
+        });
+    }
+
     // وضعیت اتصال اینترنت
     window.addEventListener('online', () => {
         showToast('اینترنت متصل شد؛ همگام‌سازی... 🔄');
@@ -1994,6 +2246,7 @@
 
     // راه‌اندازی اولیه
     document.getElementById('note-date').value = getCurrentJalali().str;
+    bindDateListeners();
     renderInstallments();
     renderNotes();
     checkAutoMonthTransition();
