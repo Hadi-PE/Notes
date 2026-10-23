@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدیریت اقساط و یادداشت‌ها</title>
+    <title>مدیریت اقساط و یادداشت‌ها (همگام آنلاین)</title>
     <!-- فونت وزیرمتن -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    
+    <!-- کتابخانه‌های رسمی فایربیس گوگل (نسخه سازگار بدون نیاز به بیلد یا سرور) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
     <style>
         :root {
             --primary: #2563eb;
@@ -40,6 +45,55 @@
             max-width: 900px;
             margin: 10px auto 0;
             padding-bottom: 40px;
+        }
+
+        /* نوار وضعیت اتصال ابری */
+        .sync-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .sync-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: bold;
+            background: #e2e8f0;
+            color: #475569;
+            transition: all 0.3s ease;
+        }
+
+        .sync-badge.online {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .sync-badge.offline {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #94a3b8;
+            display: inline-block;
+        }
+
+        .sync-badge.online .status-dot {
+            background: #22c55e;
+            box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+        }
+
+        .sync-badge.offline .status-dot {
+            background: #ef4444;
         }
 
         /* نوار تب‌ها (تنها هدر بالایی) */
@@ -473,7 +527,7 @@
             position: absolute;
             right: 12px;
             top: 50%;
-            transform: translateY(-50%);
+transform: translateY(-50%);
             color: #94a3b8;
         }
 
@@ -524,6 +578,13 @@
 <body>
 
 <div class="container">
+    <!-- وضعیت آنلاین بودن و سینک با فایربیس -->
+    <div class="sync-bar">
+        <div id="sync-status" class="sync-badge">
+            <span class="status-dot"></span> در حال بررسی اتصال ابری...
+        </div>
+    </div>
+
     <!-- نوار تب‌ها (تنها هدر بالایی) -->
     <div class="tabs">
         <button class="tab-btn active" id="btn-tab-installments" onclick="switchTab('installments')">
@@ -682,6 +743,37 @@
 <div id="toast">شماره کپی شد! 📋</div>
 
 <script>
+    // تنظیمات فایربیس اختصاصی شما
+    const firebaseConfig = {
+        apiKey: "AIzaSyDyPMP_Tsx2rqHwlhYsInxGabrCIN7f048",
+        authDomain: "personal-notes-aecbc.firebaseapp.com",
+        databaseURL: "https://personal-notes-aecbc-default-rtdb.firebaseio.com",
+        projectId: "personal-notes-aecbc",
+        storageBucket: "personal-notes-aecbc.firebasestorage.app",
+        messagingSenderId: "997536657835",
+        appId: "1:997536657835:web:74c069851e18cc5fd4e2ee"
+    };
+
+    // راه‌اندازی ارتباط فایربیس
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const instRef = db.ref('ledger_installments');
+    const notesRef = db.ref('ledger_notes');
+
+    // بررسی زنده وضعیت اتصال به سرور ابری
+    const connectedRef = db.ref(".info/connected");
+    connectedRef.on("value", (snap) => {
+        const statusEl = document.getElementById("sync-status");
+        if (!statusEl) return;
+        if (snap.val() === true) {
+            statusEl.innerHTML = '<span class="status-dot"></span> ☁️ متصل و همگام آنلاین';
+            statusEl.className = 'sync-badge online';
+        } else {
+            statusEl.innerHTML = '<span class="status-dot"></span> ⚠️ در حال اتصال به سرور...';
+            statusEl.className = 'sync-badge offline';
+        }
+    });
+
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -690,7 +782,7 @@
         document.getElementById('btn-tab-' + tabId).classList.add('active');
     }
 
-    // اقساط پیش‌فرض استخراج‌شده از جدول دفترچه شما
+    // اقساط پیش‌فرض دفترچه
     const defaultInstallments = [
         {
             id: 1,
@@ -824,14 +916,46 @@
         }
     ];
 
-    let installments = JSON.parse(localStorage.getItem('my_installments_v8'));
-    if (!installments || installments.length === 0) {
-        installments = defaultInstallments;
-        localStorage.setItem('my_installments_v8', JSON.stringify(installments));
+    function normalizeData(val) {
+        if (!val) return [];
+        if (Array.isArray(val)) return val.filter(i => i !== null && i !== undefined);
+        if (typeof val === 'object') return Object.values(val).filter(i => i !== null && i !== undefined);
+        return [];
     }
 
-    let notes = JSON.parse(localStorage.getItem('my_notes_v8')) || [];
+    // متغیرهای محلی
+    let installments = JSON.parse(localStorage.getItem('my_installments_v9')) || [...defaultInstallments];
+    let notes = JSON.parse(localStorage.getItem('my_notes_v9')) || [];
     let currentInstFilter = 'all';
+
+    // اتصال زنده (Realtime) به فایربیس: دریافت خودکار تغییرات از گوشی دیگر
+    instRef.on('value', (snapshot) => {
+        const val = snapshot.val();
+        if (val !== null) {
+            installments = normalizeData(val);
+            localStorage.setItem('my_installments_v9', JSON.stringify(installments));
+            renderInstallments();
+        } else {
+            // اگر دیتابیس نو و خالی است، اطلاعات پیش‌فرض آپلود می‌شود
+            installments = [...defaultInstallments];
+            instRef.set(installments);
+            localStorage.setItem('my_installments_v9', JSON.stringify(installments));
+            renderInstallments();
+        }
+    });
+
+    notesRef.on('value', (snapshot) => {
+        const val = snapshot.val();
+        if (val !== null) {
+            notes = normalizeData(val);
+            localStorage.setItem('my_notes_v9', JSON.stringify(notes));
+            renderNotes();
+        } else {
+            notes = [];
+            localStorage.setItem('my_notes_v9', JSON.stringify(notes));
+            renderNotes();
+        }
+    });
 
     function showToast(msg) {
         const toast = document.getElementById('toast');
@@ -892,8 +1016,10 @@
     });
 
     function saveInstallments() {
-        localStorage.setItem('my_installments_v8', JSON.stringify(installments));
+        localStorage.setItem('my_installments_v9', JSON.stringify(installments));
         updateStats();
+        // همگام‌سازی ابری با فایربیس
+        instRef.set(installments).catch(err => console.error("Firebase save error:", err));
     }
 
     function togglePaidStatus(id, e) {
@@ -1042,7 +1168,9 @@
     });
 
     function saveNotes() {
-        localStorage.setItem('my_notes_v8', JSON.stringify(notes));
+        localStorage.setItem('my_notes_v9', JSON.stringify(notes));
+        // همگام‌سازی ابری با فایربیس
+        notesRef.set(notes).catch(err => console.error("Firebase save notes error:", err));
     }
 
     function renderNotes() {
@@ -1149,7 +1277,7 @@
         reader.readAsText(file);
     }
 
-        function resetToDefaults() {
+    function resetToDefaults() {
         if (confirm('آیا می‌خواهید لیست اقساط به اطلاعات اولیه دفترچه بازنشانی شود؟')) {
             installments = [...defaultInstallments];
             saveInstallments();
@@ -1158,6 +1286,7 @@
         }
     }
 
+    // بارگذاری اولیه
     renderInstallments();
     renderNotes();
 </script>
