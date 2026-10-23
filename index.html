@@ -3,14 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدیریت اقساط و یادداشت‌ها (همگام آنلاین)</title>
+    <title>مدیریت اقساط و یادداشت‌ها (همگام آنلاین و آفلاین)</title>
     <!-- فونت وزیرمتن -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
-    
-    <!-- کتابخانه‌های رسمی فایربیس گوگل (نسخه سازگار بدون نیاز به بیلد یا سرور) -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
     <style>
         :root {
             --primary: #2563eb;
@@ -47,7 +42,8 @@
             padding-bottom: 40px;
         }
 
-        /* نوار وضعیت اتصال ابری */
+        
+        /* نوار وضعیت اتصال ابری (همگام‌سازی دوطرفه با پشتیبانی کامل آفلاین) */
         .sync-bar {
             display: flex;
             justify-content: center;
@@ -58,19 +54,37 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 4px 14px;
+            padding: 5px 14px;
             border-radius: 20px;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             font-weight: bold;
             background: #e2e8f0;
             color: #475569;
+            cursor: pointer;
             transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .sync-badge:active {
+            transform: scale(0.96);
         }
 
         .sync-badge.online {
             background: #dcfce7;
             color: #15803d;
             border: 1px solid #bbf7d0;
+        }
+
+        .sync-badge.syncing {
+            background: #dbeafe;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+
+        .sync-badge.pending {
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
         }
 
         .sync-badge.offline {
@@ -92,8 +106,24 @@
             box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
         }
 
+        .sync-badge.syncing .status-dot {
+            background: #3b82f6;
+            box-shadow: 0 0 6px rgba(59, 130, 246, 0.6);
+            animation: pulse 1s infinite alternate;
+        }
+
+        .sync-badge.pending .status-dot {
+            background: #f59e0b;
+            box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+        }
+
         .sync-badge.offline .status-dot {
             background: #ef4444;
+        }
+
+        @keyframes pulse {
+            from { opacity: 0.4; }
+            to { opacity: 1; }
         }
 
         /* نوار تب‌ها (تنها هدر بالایی) */
@@ -527,7 +557,7 @@
             position: absolute;
             right: 12px;
             top: 50%;
-transform: translateY(-50%);
+            transform: translateY(-50%);
             color: #94a3b8;
         }
 
@@ -578,10 +608,10 @@ transform: translateY(-50%);
 <body>
 
 <div class="container">
-    <!-- وضعیت آنلاین بودن و سینک با فایربیس -->
+    <!-- وضعیت آنلاین، آفلاین و همگام‌سازی دوطرفه -->
     <div class="sync-bar">
-        <div id="sync-status" class="sync-badge">
-            <span class="status-dot"></span> در حال بررسی اتصال ابری...
+        <div id="sync-status" class="sync-badge" onclick="manualSync()" title="برای بررسی یا همگام‌سازی مجدد کلیک کنید">
+            <span class="status-dot"></span> <span>در حال بررسی اتصال ابری...</span>
         </div>
     </div>
 
@@ -743,36 +773,8 @@ transform: translateY(-50%);
 <div id="toast">شماره کپی شد! 📋</div>
 
 <script>
-    // تنظیمات فایربیس اختصاصی شما
-    const firebaseConfig = {
-        apiKey: "AIzaSyDyPMP_Tsx2rqHwlhYsInxGabrCIN7f048",
-        authDomain: "personal-notes-aecbc.firebaseapp.com",
-        databaseURL: "https://personal-notes-aecbc-default-rtdb.firebaseio.com",
-        projectId: "personal-notes-aecbc",
-        storageBucket: "personal-notes-aecbc.firebasestorage.app",
-        messagingSenderId: "997536657835",
-        appId: "1:997536657835:web:74c069851e18cc5fd4e2ee"
-    };
-
-    // راه‌اندازی ارتباط فایربیس
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const instRef = db.ref('ledger_installments');
-    const notesRef = db.ref('ledger_notes');
-
-    // بررسی زنده وضعیت اتصال به سرور ابری
-    const connectedRef = db.ref(".info/connected");
-    connectedRef.on("value", (snap) => {
-        const statusEl = document.getElementById("sync-status");
-        if (!statusEl) return;
-        if (snap.val() === true) {
-            statusEl.innerHTML = '<span class="status-dot"></span> ☁️ متصل و همگام آنلاین';
-            statusEl.className = 'sync-badge online';
-        } else {
-            statusEl.innerHTML = '<span class="status-dot"></span> ⚠️ در حال اتصال به سرور...';
-            statusEl.className = 'sync-badge offline';
-        }
-    });
+    // سرور اختصاصی ابری بدون فیلتر با قابلیت کارکرد آفلاین
+    const CLOUD_URL = "https://getpantry.cloud/apiv1/pantry/67eaa30e-0dec-479b-a324-f3afc2ffdcdf/basket/my_ledger_data";
 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -782,7 +784,7 @@ transform: translateY(-50%);
         document.getElementById('btn-tab-' + tabId).classList.add('active');
     }
 
-    // اقساط پیش‌فرض دفترچه
+    // اقساط پیش‌فرض استخراج‌شده از جدول دفترچه شما
     const defaultInstallments = [
         {
             id: 1,
@@ -916,46 +918,144 @@ transform: translateY(-50%);
         }
     ];
 
-    function normalizeData(val) {
-        if (!val) return [];
-        if (Array.isArray(val)) return val.filter(i => i !== null && i !== undefined);
-        if (typeof val === 'object') return Object.values(val).filter(i => i !== null && i !== undefined);
-        return [];
+    let installments = JSON.parse(localStorage.getItem('my_installments_v10'));
+    if (!installments || installments.length === 0) {
+        installments = defaultInstallments;
+        localStorage.setItem('my_installments_v10', JSON.stringify(installments));
     }
 
-    // متغیرهای محلی
-    let installments = JSON.parse(localStorage.getItem('my_installments_v9')) || [...defaultInstallments];
-    let notes = JSON.parse(localStorage.getItem('my_notes_v9')) || [];
-    let currentInstFilter = 'all';
+    let notes = JSON.parse(localStorage.getItem('my_notes_v10')) || [];
+        let currentInstFilter = 'all';
+    let hasPendingSync = localStorage.getItem('my_ledger_pending_sync_v10') === 'true';
+    let isSyncing = false;
 
-    // اتصال زنده (Realtime) به فایربیس: دریافت خودکار تغییرات از گوشی دیگر
-    instRef.on('value', (snapshot) => {
-        const val = snapshot.val();
-        if (val !== null) {
-            installments = normalizeData(val);
-            localStorage.setItem('my_installments_v9', JSON.stringify(installments));
-            renderInstallments();
-        } else {
-            // اگر دیتابیس نو و خالی است، اطلاعات پیش‌فرض آپلود می‌شود
-            installments = [...defaultInstallments];
-            instRef.set(installments);
-            localStorage.setItem('my_installments_v9', JSON.stringify(installments));
-            renderInstallments();
-        }
-    });
+    function updateSyncBadge(status, text) {
+        const el = document.getElementById('sync-status');
+        if (!el) return;
+        el.className = 'sync-badge ' + status;
+        el.innerHTML = `<span class="status-dot"></span> <span>${text}</span>`;
+    }
 
-    notesRef.on('value', (snapshot) => {
-        const val = snapshot.val();
-        if (val !== null) {
-            notes = normalizeData(val);
-            localStorage.setItem('my_notes_v9', JSON.stringify(notes));
-            renderNotes();
-        } else {
-            notes = [];
-            localStorage.setItem('my_notes_v9', JSON.stringify(notes));
-            renderNotes();
+    // ارسال داده‌ها به سرور ابری
+    async function pushToCloud() {
+        if (isSyncing) return;
+        isSyncing = true;
+        updateSyncBadge('syncing', '🔄 در حال ارسال به سرور...');
+
+        try {
+            const payload = {
+                installments: installments,
+                notes: notes,
+                updatedAt: Date.now()
+            };
+
+            const response = await fetch(CLOUD_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                hasPendingSync = false;
+                localStorage.setItem('my_ledger_pending_sync_v10', 'false');
+                localStorage.setItem('my_ledger_synced_at_v10', Date.now().toString());
+                updateSyncBadge('online', '☁️ متصل و همگام آنلاین');
+            } else {
+                throw new Error('Server status: ' + response.status);
+            }
+        } catch (err) {
+            console.warn('Sync push error:', err);
+            hasPendingSync = true;
+            localStorage.setItem('my_ledger_pending_sync_v10', 'true');
+            if (!navigator.onLine) {
+                updateSyncBadge('offline', '⚠️ آفلاین (اطلاعات در گوشی امن است)');
+            } else {
+                updateSyncBadge('pending', '⏳ ذخیره در گوشی (در انتظار اینترنت)');
+            }
+        } finally {
+            isSyncing = false;
         }
-    });
+    }
+
+    // دریافت آخرین تغییرات ثبت‌شده از گوشی دیگر
+    async function pullFromCloud(silent = true) {
+        if (isSyncing) return;
+        
+        // اگر تغییر محلی ذخیره‌شده‌ای داریم که هنوز به سرور نرفته، اول بفرست
+        if (hasPendingSync) {
+            await pushToCloud();
+            return;
+        }
+
+        isSyncing = true;
+        if (!silent) {
+            updateSyncBadge('syncing', '🔄 در حال دریافت اطلاعات...');
+        }
+
+        try {
+            const response = await fetch(CLOUD_URL, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data && (Array.isArray(data.installments) || Array.isArray(data.notes))) {
+                    const cloudUpdatedAt = data.updatedAt || 0;
+                    const localUpdatedAt = parseInt(localStorage.getItem('my_ledger_updated_at_v10') || '0', 10);
+
+                    // اگر اطلاعات سرور جدیدتر از این گوشی بود یا برای بار اول روی این گوشی باز شده
+                    if (cloudUpdatedAt >= localUpdatedAt || !localStorage.getItem('my_installments_v10')) {
+                        if (Array.isArray(data.installments) && data.installments.length > 0) {
+                            installments = data.installments;
+                            localStorage.setItem('my_installments_v10', JSON.stringify(installments));
+                        }
+                        if (Array.isArray(data.notes)) {
+                            notes = data.notes;
+                            localStorage.setItem('my_notes_v10', JSON.stringify(notes));
+                        }
+                        localStorage.setItem('my_ledger_updated_at_v10', cloudUpdatedAt.toString());
+                        renderInstallments();
+                        renderNotes();
+                    }
+                }
+                updateSyncBadge('online', '☁️ متصل و همگام آنلاین');
+            } else if (response.status === 400 || response.status === 404) {
+                // اگر برای اولین بار است، اطلاعات محلی دفترچه را به عنوان نسخه پایه آپلود کن
+                isSyncing = false;
+                await pushToCloud();
+                return;
+            } else {
+                throw new Error('Server status: ' + response.status);
+            }
+        } catch (err) {
+            console.warn('Sync pull error:', err);
+            if (!navigator.onLine) {
+                updateSyncBadge('offline', '⚠️ آفلاین (اطلاعات در گوشی امن است)');
+            } else if (hasPendingSync) {
+                updateSyncBadge('pending', '⏳ ذخیره در گوشی (در انتظار اینترنت)');
+            } else {
+                updateSyncBadge('offline', '⚠️ عدم اتصال (استفاده از حافظه گوشی)');
+            }
+        } finally {
+            isSyncing = false;
+        }
+    }
+
+    // همگام‌سازی دستی با کلیک روی نوار بالای صفحه
+    function manualSync() {
+        showToast('در حال همگام‌سازی با سرور... 🔄');
+        if (hasPendingSync) {
+            pushToCloud();
+        } else {
+            pullFromCloud(false);
+        }
+    }
+
 
     function showToast(msg) {
         const toast = document.getElementById('toast');
@@ -1016,10 +1116,12 @@ transform: translateY(-50%);
     });
 
     function saveInstallments() {
-        localStorage.setItem('my_installments_v9', JSON.stringify(installments));
+        localStorage.setItem('my_installments_v10', JSON.stringify(installments));
+        localStorage.setItem('my_ledger_updated_at_v10', Date.now().toString());
+        hasPendingSync = true;
+        localStorage.setItem('my_ledger_pending_sync_v10', 'true');
         updateStats();
-        // همگام‌سازی ابری با فایربیس
-        instRef.set(installments).catch(err => console.error("Firebase save error:", err));
+        pushToCloud();
     }
 
     function togglePaidStatus(id, e) {
@@ -1168,9 +1270,11 @@ transform: translateY(-50%);
     });
 
     function saveNotes() {
-        localStorage.setItem('my_notes_v9', JSON.stringify(notes));
-        // همگام‌سازی ابری با فایربیس
-        notesRef.set(notes).catch(err => console.error("Firebase save notes error:", err));
+        localStorage.setItem('my_notes_v10', JSON.stringify(notes));
+        localStorage.setItem('my_ledger_updated_at_v10', Date.now().toString());
+        hasPendingSync = true;
+        localStorage.setItem('my_ledger_pending_sync_v10', 'true');
+        pushToCloud();
     }
 
     function renderNotes() {
@@ -1277,7 +1381,7 @@ transform: translateY(-50%);
         reader.readAsText(file);
     }
 
-    function resetToDefaults() {
+        function resetToDefaults() {
         if (confirm('آیا می‌خواهید لیست اقساط به اطلاعات اولیه دفترچه بازنشانی شود؟')) {
             installments = [...defaultInstallments];
             saveInstallments();
@@ -1286,9 +1390,48 @@ transform: translateY(-50%);
         }
     }
 
-    // بارگذاری اولیه
+    // همگام‌سازی هوشمند هنگام آنلاین شدن
+    window.addEventListener('online', () => {
+        showToast('اینترنت متصل شد؛ در حال همگام‌سازی... 🔄');
+        if (hasPendingSync) {
+            pushToCloud();
+        } else {
+            pullFromCloud(false);
+        }
+    });
+
+    window.addEventListener('offline', () => {
+        updateSyncBadge('offline', '⚠️ آفلاین (تغییرات در حافظه گوشی ذخیره می‌شود)');
+    });
+
+    // هنگام بازگشت به تب مرورگر یا روشن شدن صفحه گوشی
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            if (hasPendingSync) {
+                pushToCloud();
+            } else {
+                pullFromCloud(true);
+            }
+        }
+    });
+
+    // بررسی دوره‌ای پس‌زمینه هر ۱۵ ثانیه برای دریافت تغییرات گوشی دیگر
+    setInterval(() => {
+        if (navigator.onLine) {
+            if (hasPendingSync) {
+                pushToCloud();
+            } else {
+                pullFromCloud(true);
+            }
+        }
+    }, 15000);
+
+    // بارگذاری اولیه فوری از حافظه گوشی (۰ میلی‌ثانیه تأخیر)
     renderInstallments();
     renderNotes();
+
+    // همگام‌سازی آنلاین در لحظه باز شدن
+    pullFromCloud(false);
 </script>
 
 </body>
